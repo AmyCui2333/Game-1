@@ -18,7 +18,7 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getPopulation(ArrayList nodeList) {
+    public int getPopulation(ArrayList<Node> nodeList) {
         int sum = 0;
         for (Node node: locNodes){
             sum += node.getPopulation();
@@ -27,7 +27,7 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getInfectedTotal(ArrayList nodeList) {
+    public int getInfectedTotal(ArrayList<Node> nodeList) {
         int sum = 0;
         for (Node node: locNodes){
             sum += node.getInfected();
@@ -36,13 +36,15 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void setMasked(Node node) {
-        node.setMasked();
+    public void setMasked() {
+        for(Node node:locNodes){
+            node.setMasked();
+        }
     }
 
     @Override
-    public boolean getMasked(Node node) {
-        return node.getMasked();
+    public boolean getMasked() {
+        return locNodes.get(0).getMasked();
     }
 
     @Override
@@ -56,10 +58,10 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getShutDownTotal(ArrayList nodeList) {
+    public int getShutDownTotal(ArrayList<Node> nodeList) {
         int shutdown = 0;
         for (Node node : locNodes) {
-            if (node.getShutDown() == true) shutdown += 1;
+            if (node.getShutDown()) shutdown += 1;
         }
         return shutdown;
     }
@@ -77,5 +79,15 @@ public class ModelImplement implements Model{
     @Override
     public void skipDay() {
 
+    }
+
+    @Override
+    public int getGatherSize(Node node) {
+        return node.getGatherSize();
+    }
+
+    @Override
+    public void setgathersize(Node node, int i) {
+        node.setGatherSize(i);
     }
 }

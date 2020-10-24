@@ -6,24 +6,28 @@ public interface Model {
 
     ArrayList<Node> getNodeinRange(double minx, double maxx, double miny, double maxy);
 
-    int getPopulation(ArrayList nodeList);
+    int getPopulation(ArrayList<Node> nodeList);
 
-    int getInfectedTotal(ArrayList nodeList);
+    int getInfectedTotal(ArrayList<Node> nodeList);
 
-    boolean getMasked(Node node);
+    boolean getMasked();
 
-    void setMasked(Node node);
+    void setMasked();
 
     boolean getShutDown(Node node);
 
     void setShutDown(Node node);
 
-    int getShutDownTotal(ArrayList nodeList);
+    int getShutDownTotal(ArrayList<Node> nodeList);
 
     int getDay();
 
     void dayPass();
 
     void skipDay();
+
+    void setgathersize(Node node, int i);
+
+    int getGatherSize(Node node);
 
 }

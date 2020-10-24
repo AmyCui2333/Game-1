@@ -19,5 +19,9 @@ public interface Node {
 
     boolean getMasked();
 
+    void setGatherSize(int i);
+
+    int getGatherSize();
+
 
 }

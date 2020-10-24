@@ -9,6 +9,7 @@ public class NodeImplementation implements Node{
     private int infected;
     private ArrayList<NodeImplementation> connected;
     private boolean masked;
+    private int gathersize;
     private boolean shutdown;
     private LocationType loctype;
 
@@ -46,19 +47,29 @@ public class NodeImplementation implements Node{
 
     @Override
     public void setShutDown() {
-        if (shutdown == true) shutdown = false;
+        if (shutdown) shutdown = false;
         else shutdown = true;
     }
 
     @Override
     public void setMasked() {
-        if (masked == true) masked = false;
+        if (masked) masked = false;
         else masked = true;
     }
 
     @Override
     public boolean getMasked() {
         return masked;
+    }
+
+    @Override
+    public void setGatherSize(int i) {
+        gathersize = i;
+    }
+
+    @Override
+    public int getGatherSize() {
+        return gathersize;
     }
 
 }
