@@ -26,7 +26,7 @@ public interface Model {
 
     void skipDay();
 
-    void setgathersize(Node node, int i);
+    void setGatherSize(Node node, int i);
 
     int getGatherSize(Node node);
 

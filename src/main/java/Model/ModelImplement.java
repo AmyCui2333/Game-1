@@ -1,13 +1,16 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ModelImplement implements Model{
     ArrayList<Node> locNodes;
-    int day = 0;
+    int day;
 
     ModelImplement(){
         generateNodes();
+        connectNodes();
+        day = 0;
     }
 
     @Override
@@ -91,7 +94,7 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void setgathersize(Node node, int i) {
+    public void setGatherSize(Node node, int i) {
         node.setGatherSize(i);
     }
 
@@ -102,5 +105,19 @@ public class ModelImplement implements Model{
             Nodes.add(node);
         }
         locNodes = Nodes;
+    }
+
+    public void connectNodes(){
+        for(Node node: locNodes){
+            Random rand = new Random();
+            ArrayList<Integer> randList = new ArrayList<>();
+            for (int i=1;i<4;i++){
+                int rand1 = rand.nextInt(locNodes.size());
+                if (node != locNodes.get(rand1) && !node.getConnected().contains(locNodes.get(rand1))) {
+                    node.addConnected(locNodes.get(rand1));
+                    locNodes.get(rand1).addConnected(node);
+                }
+            }
+        }
     }
 }

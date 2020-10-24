@@ -94,4 +94,19 @@ public class NodeImplementation implements Node{
         return new Point2D(xloc, yloc);
     }
 
+    @Override
+    public void addConnected(Node node) {
+        connected.add(node);
+    }
+
+    @Override
+    public void removeConnected(Node node) {
+        connected.remove(node);
+    }
+
+    @Override
+    public ArrayList<Node> getConnected() {
+        return connected;
+    }
+
 }
