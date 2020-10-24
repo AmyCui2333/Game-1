@@ -12,11 +12,14 @@ public class NodeImplementation implements Node{
     private double yloc;
     private int population;
     private int infected;
+    private int succeptable;
+    private int recovered;
     private ArrayList<Node> connected;
     private boolean masked;
     private int gathersize;
     private boolean shutdown;
     private LocationType loctype;
+    private double b;
 
     public NodeImplementation(){
         int min = -1;
@@ -30,6 +33,8 @@ public class NodeImplementation implements Node{
         masked = false;
         shutdown = false;
         loctype = NEIGHBOURHOOD;
+        recovered = 0;
+        succeptable = population-infected;
     }
 
     @Override
@@ -115,6 +120,31 @@ public class NodeImplementation implements Node{
     @Override
     public void addPopulation(int pop) {
         population += pop;
+    }
+
+    @Override
+    public int getSucceptable() {
+        return succeptable;
+    }
+
+    @Override
+    public void setSucceptable(int i) {
+        succeptable = i;
+    }
+
+    @Override
+    public void setRecovered(int i) {
+        recovered = i;
+    }
+
+    @Override
+    public int getRecovered() {
+        return recovered;
+    }
+
+    @Override
+    public void setInfected(int i) {
+        infected = i;
     }
 
 }

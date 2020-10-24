@@ -83,6 +83,7 @@ public class ModelImplement implements Model{
     public void dayPass() {
         day += 1;
         spreadWithin();
+        recover();
         travel();
     }
 
@@ -118,11 +119,7 @@ public class ModelImplement implements Model{
     public void connectNodes(){
         for(Node node: locNodes){
             Random random = new Random();
-            ArrayList<Integer> randList = new ArrayList<>();
-            for (int i=1;i<5;i++){
-                int randint = random.nextInt(locNodes.size());
-                randList.add(randint);
-            }
+            ArrayList<Integer> randList = randomList(5);
             for (int rand: randList) {
                 if (node != locNodes.get(rand) && !node.getConnected().contains(locNodes.get(rand))) {
                     node.addConnected(locNodes.get(rand));
@@ -149,10 +146,29 @@ public class ModelImplement implements Model{
             System.out.println(flowsize + " moved from" + start + " to " + next);
         }
     }
+    //TODO: Model the travelling of infected&recovered individuals(mainly infected)
 
     public void spreadWithin(){
-
+        if(day>0) {
+            for (Node n : locNodes) {
+                if (n.getInfected() != 0) {
+                    int infectStart = n.getInfected();
+                    int spread = (int) (infectStart * 5.0);
+                    n.setInfected(spread);
+                }
+            }
+        }
     }
+    //TODO: Set a rate of spread to update each node
+
+    public void recover(){
+        if(day>=14) {
+            for (Node n : locNodes) {
+                int infectStart = n.getInfected();
+            }
+        }
+    }
+    //TODO: Set a rate of recovery for each node after the 14th day
 
     public ArrayList<Integer> randomList(int max){
         Random random = new Random();

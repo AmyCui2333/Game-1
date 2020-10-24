@@ -40,4 +40,14 @@ public interface Node {
 
     void addPopulation(int pop);
 
+    int getSucceptable();
+
+    void setSucceptable(int i);
+
+    void setRecovered(int i);
+
+    int getRecovered();
+
+    void setInfected(int i);
+
 }
