@@ -7,12 +7,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -35,6 +33,7 @@ public class ControllerImpl extends Controller
     private Node selected;
     private GridPane selectedG;
     private Label population, infected, dead;
+    private final CheckBox mask, shutdown;
     public ControllerImpl(Model m, View v)
     {
         model = m;
@@ -88,12 +87,24 @@ public class ControllerImpl extends Controller
         population = new Label();
         infected = new Label();
         dead = new Label();
+        GridPane.setHalignment(pop, HPos.LEFT);
+        GridPane.setHalignment(inf, HPos.LEFT);
+        GridPane.setHalignment(ded, HPos.LEFT);
+        GridPane.setHalignment(population, HPos.RIGHT);
+        GridPane.setHalignment(infected, HPos.RIGHT);
+        GridPane.setHalignment(dead, HPos.RIGHT);
         selectedG.add(pop, 0, 0);
         selectedG.add(inf, 0, 1);
         selectedG.add(ded, 0, 2);
         selectedG.add(population, 1, 0);
         selectedG.add(infected, 1, 1);
         selectedG.add(dead, 1, 2);
+        mask = new CheckBox("Masks");
+        mask.selectedProperty().addListener((arg, oldVal, newVal) -> selected.setMasked(newVal));
+        shutdown = new CheckBox("Shutdown");
+        shutdown.selectedProperty().addListener((arg, oldVal, newVal) -> selected.setShutDown(newVal));
+        selectedG.add(mask, 0, 3);
+        selectedG.add(shutdown, 1, 3);
 
         mainV.setPadding(new Insets(20));
         mainV.setSpacing(20);
@@ -111,7 +122,9 @@ public class ControllerImpl extends Controller
             selectedG.setVisible(true);
             population.setText(String.valueOf(selected.getPopulation()));
             infected.setText(String.valueOf(selected.getInfected()));
-            dead.setText("unimplemented");
+            dead.setText(String.valueOf(selected.getDeath()));
+            mask.setSelected(selected.getMasked());
+            shutdown.setSelected(selected.getShutDown());
         } else selectedG.setVisible(false);
         view.draw();
     }

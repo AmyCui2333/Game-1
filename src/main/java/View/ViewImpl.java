@@ -96,7 +96,7 @@ public class ViewImpl extends  View
         });
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->
         {
-            var viewPt = scrToView(e.getX(), e.getY());
+            var viewPt = scrToView(e.getX(), e.getY()).add(-nodeSize / 2, nodeSize / 2);
             Node selected = null;
             for(Node n : nodesOnScreen)
             {
