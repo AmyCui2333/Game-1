@@ -149,7 +149,7 @@ public class ModelImplement implements Model{
 
     public void generateNodes(){
         ArrayList<Node> Nodes = new ArrayList<>();
-        for(int i=1;i<10;i++){
+        for(int i=1;i<100;i++){
             Node node = new NodeImplementation();
             Nodes.add(node);
         }
@@ -159,7 +159,7 @@ public class ModelImplement implements Model{
     public void connectNodes(){
         for(Node node: locNodes){
             Random random = new Random();
-            ArrayList<Integer> randList = randomList(5);
+            ArrayList<Integer> randList = randomList(10);
             for (int rand: randList) {
                 if (node != locNodes.get(rand) && !node.getConnected().contains(locNodes.get(rand))) {
                     node.addConnected(locNodes.get(rand));
