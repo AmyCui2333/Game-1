@@ -14,6 +14,7 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
@@ -86,8 +87,8 @@ public class ViewImpl extends  View
         {
             double width = maxX - minX;
             double height = maxY - minY;
-            double widthDiff = width * (1 + 5 * e.getZoomFactor());
-            double heightDiff = height * (1 + 5 * e.getZoomFactor());
+            double widthDiff = width * (1 + 10 * e.getZoomFactor());
+            double heightDiff = height * (1 + 10 * e.getZoomFactor());
             maxX += widthDiff / 2;
             minX -= widthDiff / 2;
             maxY += heightDiff / 2;
@@ -162,11 +163,14 @@ public class ViewImpl extends  View
     public synchronized void draw()
     {
         gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
+
+
         gc.setStroke(Color.BLACK);
         gc.strokeLine(0, 0, canv.getWidth(), 0);
         gc.strokeLine(canv.getWidth(), 0, canv.getWidth(), canv.getHeight());
         gc.strokeLine(canv.getWidth(), canv.getHeight(), 0, canv.getHeight());
         gc.strokeLine(0, canv.getHeight(), 0, 0);
+        gc.setFont(new Font(12));
         /*Point2D p1 = new Point2D(-.5, -.5), p2 = new Point2D(-.5, .5), p3 = new Point2D(.5, .5), p4 = new Point2D(.5, -.5);
         drawLine(p1, p2);
         drawLine(p2, p3);
@@ -178,7 +182,9 @@ public class ViewImpl extends  View
         p4 = new Point2D(1, -1);
         drawLine(p1, p3);
         drawLine(p2, p4);*/
-        nodesOnScreen = model.getNodeinRange(minX, maxX, minY, maxY);
+        double width = maxX - minX;
+        double height = maxY - minY;
+        nodesOnScreen = model.getNodeinRange(minX - width / 5, maxX + width / 5, minY - height / 5, maxY + height / 5);
         gc.setStroke(Color.BLUEVIOLET);
         gc.setFill(Color.BLUEVIOLET);
         Color c;
@@ -201,6 +207,7 @@ public class ViewImpl extends  View
             }
             var pt = viewToScr(n.getloc());
             gc.setFill(c);
+            gc.setStroke(c);
             double w = nodeSize * getWidth() / (maxX - minX);
             double h = nodeSize *  getHeight() / (maxY - minY);
             gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
@@ -211,5 +218,11 @@ public class ViewImpl extends  View
             gc.setStroke(Color.GREEN);
             gc.strokeText(String.valueOf(n.getRecovered()), pt.getX() - 4, pt.getY() + h + 24);
         }
+        gc.setFont(new Font(30));
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.WHITE);
+        gc.fillText("Day: " + model.getDay(), 5, 30);
+        gc.strokeText("Day: " + model.getDay(), 5, 30);
+
     }
 }

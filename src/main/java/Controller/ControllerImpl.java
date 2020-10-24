@@ -87,7 +87,9 @@ public class ControllerImpl extends Controller
         });
         var dispInf = new GridPane();
         dispInf.setVgap(10);
+        dispInf.setHgap(20);
         selectedG = new GridPane();
+        selectedG.setHgap(20);
         selectedG.setVgap(10);
         selectedG.setVisible(false);
         Label pop = new Label("Population:");
