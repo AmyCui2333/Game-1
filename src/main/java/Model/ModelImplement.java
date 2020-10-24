@@ -6,6 +6,10 @@ public class ModelImplement implements Model{
     ArrayList<Node> locNodes;
     int day = 0;
 
+    ModelImplement(){
+        generateNodes();
+    }
+
     @Override
     public ArrayList<Node> getNodeinRange(double minx, double maxx, double miny, double maxy) {
         ArrayList<Node> result=new ArrayList<Node>();
@@ -92,7 +96,7 @@ public class ModelImplement implements Model{
     }
 
     public void generateNodes(){
-        ArrayList<Node> Nodes = new ArrayList<Node>();
+        ArrayList<Node> Nodes = new ArrayList<>();
         for(int i=1;i<10;i++){
             Node node = new NodeImplementation();
             Nodes.add(node);
