@@ -12,7 +12,7 @@ public class NodeImplementation implements Node{
     private double yloc;
     private int population;
     private int infected;
-    private int succeptable;
+    private int susceptible;
     private int recovered;
     private int death;
     private ArrayList<Node> connected;
@@ -35,7 +35,7 @@ public class NodeImplementation implements Node{
         shutdown = false;
         loctype = NEIGHBOURHOOD;
         recovered = 0;
-        succeptable = population-infected;
+        susceptible = population-infected;
     }
 
     @Override
@@ -74,8 +74,8 @@ public class NodeImplementation implements Node{
     }
 
     @Override
-    public void setMasked() {
-        masked = !masked;
+    public void setMasked(boolean bool) {
+        masked = bool;
     }
 
     @Override
@@ -124,13 +124,13 @@ public class NodeImplementation implements Node{
     }
 
     @Override
-    public int getSucceptable() {
-        return succeptable;
+    public int getSusceptible() {
+        return susceptible;
     }
 
     @Override
-    public void setSucceptable(int i) {
-        succeptable = i;
+    public void setSusceptible(int i) {
+        susceptible = i;
     }
 
     @Override

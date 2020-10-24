@@ -14,7 +14,7 @@ public interface Model {
 
     boolean getMasked();
 
-    void setMasked();
+    void setMasked(boolean bool);
 
     boolean getShutDown(Node node);
 

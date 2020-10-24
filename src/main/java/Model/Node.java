@@ -20,7 +20,7 @@ public interface Node {
 
     void setShutDown();
 
-    void setMasked();
+    void setMasked(boolean bool);
 
     boolean getMasked();
 
@@ -40,9 +40,9 @@ public interface Node {
 
     void addPopulation(int pop);
 
-    int getSucceptable();
+    int getSusceptible();
 
-    void setSucceptable(int i);
+    void setSusceptible(int i);
 
     void setRecovered(int i);
 

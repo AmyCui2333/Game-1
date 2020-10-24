@@ -65,9 +65,9 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void setMasked() {
+    public void setMasked(boolean bool) {
         for(Node node:locNodes){
-            node.setMasked();
+            node.setMasked(bool);
         }
     }
 
