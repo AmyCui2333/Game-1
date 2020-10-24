@@ -205,9 +205,11 @@ public class ViewImpl extends  View
             double h = nodeSize *  getHeight() / (maxY - minY);
             gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
             gc.setStroke(Color.WHITE);
-            gc.strokeText(String.valueOf(n.getPopulation()), pt.getX() - 4, pt.getY() + h - 4);
+            gc.strokeText(String.valueOf(n.getPopulation()), pt.getX() - 4, pt.getY() + h - 8);
             gc.setStroke(Color.RED);
-            gc.strokeText(String.valueOf(n.getInfected()), pt.getX() - 4, pt.getY() + h + 12);
+            gc.strokeText(String.valueOf(n.getInfected()), pt.getX() - 4, pt.getY() + h + 8);
+            gc.setStroke(Color.GREEN);
+            gc.strokeText(String.valueOf(n.getRecovered()), pt.getX() - 4, pt.getY() + h + 24);
         }
     }
 }
