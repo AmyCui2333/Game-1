@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
+import static java.lang.Math.min;
+
 public class ModelImplement implements Model{
     ArrayList<Node> locNodes;
     int day;
     int death;
     int population;
     int infected;
+    double recoveryRate;
 
     ModelImplement(){
         generateNodes();
@@ -77,8 +80,8 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void setShutDown(Node node) {
-        node.setShutDown();
+    public void setShutDown(Node node, boolean bool) {
+        node.setShutDown(bool);
     }
 
     @Override
@@ -179,7 +182,7 @@ public class ModelImplement implements Model{
             for (Node n : locNodes) {
                 if (n.getInfected() != 0) {
                     int infectStart = n.getInfected();
-                    int spread = (int) (infectStart * 5.0);
+                    int spread = min(n.getPopulation(),(int) (infectStart * 3.0));
                     n.setInfected(spread);
                 }
             }

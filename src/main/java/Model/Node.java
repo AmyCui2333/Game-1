@@ -18,7 +18,7 @@ public interface Node {
 
     boolean getShutDown();
 
-    void setShutDown();
+    void setShutDown(boolean bool);
 
     void setMasked(boolean bool);
 

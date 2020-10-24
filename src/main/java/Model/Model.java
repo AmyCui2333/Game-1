@@ -18,7 +18,7 @@ public interface Model {
 
     boolean getShutDown(Node node);
 
-    void setShutDown(Node node);
+    void setShutDown(Node node, boolean bool);
 
     int getShutDownTotal(ArrayList<Node> nodeList);
 

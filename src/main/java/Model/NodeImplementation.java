@@ -20,7 +20,10 @@ public class NodeImplementation implements Node{
     private int gathersize;
     private boolean shutdown;
     private LocationType loctype;
-    private double b;
+    private double infectionrate;
+    private double transProb;
+    private double contactRate;
+
 
     public NodeImplementation(){
         int min = -1;
@@ -69,8 +72,8 @@ public class NodeImplementation implements Node{
     }
 
     @Override
-    public void setShutDown() {
-        shutdown = !shutdown;
+    public void setShutDown(boolean bool) {
+        shutdown = bool;
     }
 
     @Override
