@@ -12,7 +12,7 @@ public class ModelImplement implements Model{
     int death;
     int population;
     int infected;
-    double recoveryRate;
+    int recovered;
 
     ModelImplement(){
         generateNodes();
@@ -23,10 +23,10 @@ public class ModelImplement implements Model{
 
     @Override
     public void dayPass() {
-        day += 1;
+        ++day;
         spreadWithin();
-        recover();
         travel();
+        dieAndRecover();
         update();
     }
 
@@ -50,14 +50,17 @@ public class ModelImplement implements Model{
         int pop = 0;
         int death = 0;
         int infect = 0;
+        int recover = 0;
         for (Node node: locNodes){
             pop += node.getPopulation();
             death += node.getDeath();
             infect += node.getInfected();
+            recover += node.getRecovered();
         }
         this.population = pop;
-        this.death = death;
         this.infected = infect;
+        this.death = death;
+        this.recovered = recover;
 
     }
 
@@ -130,6 +133,11 @@ public class ModelImplement implements Model{
     }
 
     @Override
+    public int getRecovered() {
+        return recovered;
+    }
+
+    @Override
     public int getDeath() {
         return death;
     }
@@ -193,14 +201,22 @@ public class ModelImplement implements Model{
     }
     //TODO: Set a rate of spread to update each node
 
-    public void recover(){
+    public void dieAndRecover(){
         if(day>=14) {
             for (Node n : locNodes) {
                 int infectStart = n.getInfected();
+                int die = (int)(infectStart*0.034);
+                int recover = (int)(infectStart*0.08);
+                n.setRecovered(recover);
+                n.setInfected(infectStart-recover);
+                n.setDeath(n.getDeath()+die);
+                n.setPopulation(n.getPopulation()-die);
+                n.setInfected(infectStart-die);
             }
         }
     }
     //TODO: Set a rate of recovery for each node after the 14th day
+
 
     public ArrayList<Integer> randomList(int max){
         Random random = new Random();

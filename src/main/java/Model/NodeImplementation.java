@@ -156,4 +156,9 @@ public class NodeImplementation implements Node{
         return death;
     }
 
+    @Override
+    public void setDeath(int i) {
+        death = i;
+    }
+
 }
