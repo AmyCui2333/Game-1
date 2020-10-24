@@ -208,10 +208,9 @@ public class ModelImplement implements Model{
                 int die = (int)(infectStart*0.034);
                 int recover = (int)(infectStart*0.08);
                 n.setRecovered(n.getRecovered()+recover);
-                n.setInfected(infectStart-recover);
                 n.setDeath(n.getDeath()+die);
                 n.setPopulation(n.getPopulation()-die);
-                n.setInfected(infectStart-die);
+                n.setInfected(infectStart-recover-die);
             }
         }
     }
