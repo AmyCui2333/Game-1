@@ -82,6 +82,7 @@ public class ModelImplement implements Model{
     @Override
     public void dayPass() {
         day += 1;
+        spreadWithin();
         travel();
     }
 
@@ -134,12 +135,7 @@ public class ModelImplement implements Model{
     }
 
     public void travel(){
-        Random random = new Random();
-        ArrayList<Integer> randList = new ArrayList<>();
-        for (int i=1;i<3;i++){
-            int randint = random.nextInt(locNodes.size());
-            randList.add(randint);
-        }
+        ArrayList<Integer> randList = randomList(3);
         for(int rand:randList){
             Node start = locNodes.get(rand);
             int popStart = start.getPopulation();
@@ -150,7 +146,21 @@ public class ModelImplement implements Model{
             start.setPopulation(popStart-flowsize);
             Node next = locNodes.get(nextNode);
             next.addPopulation(flowsize);
-            System.out.print(flowsize + " moved from" + start + " to " + next);
+            System.out.println(flowsize + " moved from" + start + " to " + next);
         }
+    }
+
+    public void spreadWithin(){
+
+    }
+
+    public ArrayList<Integer> randomList(int max){
+        Random random = new Random();
+        ArrayList<Integer> randList = new ArrayList<>();
+        for (int i=1;i<max;i++){
+            int randint = random.nextInt(locNodes.size());
+            randList.add(randint);
+        }
+        return randList;
     }
 }
