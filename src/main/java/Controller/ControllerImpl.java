@@ -58,16 +58,14 @@ public class ControllerImpl extends Controller
                         {
                             if(playing)
                             {
-                                //TODO ENABLE synchronized (model)
+                                synchronized (model)
                                 {
-                                    System.out.println("moving");
-                                    //model.dayPass();
+                                    model.dayPass();
                                 }
                             }
                         }));
         gogogo.setCycleCount(Timeline.INDEFINITE);
         gogogo.play();
-        gogogo.setRate(10);
         mainV.setPadding(new Insets(20));
         mainV.setSpacing(20);
         HBox buttonBox = new HBox();

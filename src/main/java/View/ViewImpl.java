@@ -1,19 +1,30 @@
 package View;
 
 import Model.Model;
+import Model.Node;
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 
 public class ViewImpl extends  View
 {
     private final Canvas canv;
     private final GraphicsContext gc;
     private double minX, maxX, minY, maxY;
+    private ArrayList<Node> nodesOnScreen;
+    private final Model model;
     public ViewImpl(Model m)
     {
+        this.model = m;
         canv = new Canvas();
         this.getChildren().add(canv);
         gc = canv.getGraphicsContext2D();
@@ -32,6 +43,53 @@ public class ViewImpl extends  View
         {
             if(!oldVal.equals(newVal))
                 draw();
+        });
+        this.addEventHandler(ScrollEvent.ANY, e ->
+        {
+            if(e.isControlDown())
+            {
+                double width = maxX - minX;
+                double height = maxY - minY;
+                double avg = (getWidth() + getHeight()) / 2;
+                double widthDiff = width * (1 - e.getDeltaY() / avg) - width;
+                double heightDiff = height * (1 - e.getDeltaY() / avg) - height;
+                maxX += widthDiff / 2;
+                minX -= widthDiff / 2;
+                maxY += heightDiff / 2;
+                minY -= heightDiff / 2;
+            } else
+            {
+                double dx;
+                double dy;
+                if(e.isShiftDown())
+                {
+                    dy = (e.getDeltaX() / getWidth()) * (maxX - minX);
+                    dx = (e.getDeltaY() / getHeight()) * (minY - maxY);
+                } else
+                {
+                    dx = (e.getDeltaX() / getWidth()) * (maxX - minX);
+                    dy = (e.getDeltaY() / getHeight()) * (minY - maxY);
+                }
+                minX += dx;
+                maxX += dx;
+
+                minY += dy;
+                maxY += dy;
+            }
+            draw();
+        });
+        this.addEventHandler(ZoomEvent.ANY, e ->
+        {
+            System.out.println("zoooommmmm");
+            double width = maxX - minX;
+            double height = maxY - minY;
+            double widthDiff = width * (1 + e.getZoomFactor());
+            double heightDiff = height * (1 + e.getZoomFactor());
+            maxX += widthDiff / 2;
+            minX -= widthDiff / 2;
+            maxY += heightDiff / 2;
+            minY -= heightDiff / 2;
+            draw();
         });
         canv.setVisible(true);
     }
@@ -70,10 +128,6 @@ public class ViewImpl extends  View
     private void drawLine(Point2D p1, Point2D p2)
     {
         Point2D psc1 = viewToScr(p1), psc2 = viewToScr(p2);
-        System.out.println(getWidth());
-        System.out.println(getHeight());
-        System.out.println(psc1);
-        System.out.println(psc2);
         gc.strokeLine(psc1.getX(), psc1.getY(), psc2.getX(), psc2.getY());
     }
 
@@ -81,9 +135,12 @@ public class ViewImpl extends  View
     public void draw()
     {
         gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
-        System.out.println("drawing");
         gc.setStroke(Color.BLACK);
-        Point2D p1 = new Point2D(-.5, -.5), p2 = new Point2D(-.5, .5), p3 = new Point2D(.5, .5), p4 = new Point2D(.5, -.5);
+        gc.strokeLine(0, 0, canv.getWidth(), 0);
+        gc.strokeLine(canv.getWidth(), 0, canv.getWidth(), canv.getHeight());
+        gc.strokeLine(canv.getWidth(), canv.getHeight(), 0, canv.getHeight());
+        gc.strokeLine(0, canv.getHeight(), 0, 0);
+        /*Point2D p1 = new Point2D(-.5, -.5), p2 = new Point2D(-.5, .5), p3 = new Point2D(.5, .5), p4 = new Point2D(.5, -.5);
         drawLine(p1, p2);
         drawLine(p2, p3);
         drawLine(p3, p4);
@@ -93,7 +150,14 @@ public class ViewImpl extends  View
         p3 = new Point2D(1, 1);
         p4 = new Point2D(1, -1);
         drawLine(p1, p3);
-        drawLine(p2, p4);
-        //TODO GET MODEL SHIT HERE
+        drawLine(p2, p4);*/
+        nodesOnScreen = model.getNodeinRange(minX, maxX, minY, maxY);
+        gc.setStroke(Color.BLUEVIOLET);
+        gc.setFill(Color.BLUEVIOLET);
+        for(Node n : nodesOnScreen)
+        {
+            var pt = viewToScr(n.getloc());
+            gc.fillOval(pt.getX(), pt.getY(), .05 * getWidth() / (maxX - minX), .05 *  getHeight() / (maxY - minY));
+        }
     }
 }
