@@ -7,11 +7,24 @@ import java.util.Random;
 public class ModelImplement implements Model{
     ArrayList<Node> locNodes;
     int day;
+    int death;
+    int population;
+    int infected;
 
     ModelImplement(){
         generateNodes();
         connectNodes();
         day = 0;
+        update();
+    }
+
+    @Override
+    public void dayPass() {
+        day += 1;
+        spreadWithin();
+        recover();
+        travel();
+        update();
     }
 
     @Override
@@ -26,21 +39,29 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getPopulation(ArrayList<Node> nodeList) {
-        int sum = 0;
-        for (Node node: locNodes){
-            sum += node.getPopulation();
-        }
-        return sum;
+    public int getPopulation() {
+        return population;
     }
 
-    @Override
-    public int getInfectedTotal(ArrayList<Node> nodeList) {
-        int sum = 0;
+    public void update() {
+        int pop = 0;
+        int death = 0;
+        int infect = 0;
         for (Node node: locNodes){
-            sum += node.getInfected();
+            pop += node.getPopulation();
+            death += node.getDeath();
+            infect += node.getInfected();
         }
-        return sum;
+        this.population = pop;
+        this.death = death;
+        this.infected = infect;
+
+    }
+
+
+    @Override
+    public int getInfected() {
+        return infected;
     }
 
     @Override
@@ -80,14 +101,6 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void dayPass() {
-        day += 1;
-        spreadWithin();
-        recover();
-        travel();
-    }
-
-    @Override
     public void skipDay() {
 
     }
@@ -100,6 +113,19 @@ public class ModelImplement implements Model{
     @Override
     public int getNodePopulation(Node node) {
         return node.getPopulation();
+    }
+
+    @Override
+    public boolean getState() {
+        if(population/death<2){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int getDeath() {
+        return death;
     }
 
     @Override

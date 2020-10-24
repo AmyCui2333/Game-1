@@ -14,6 +14,7 @@ public class NodeImplementation implements Node{
     private int infected;
     private int succeptable;
     private int recovered;
+    private int death;
     private ArrayList<Node> connected;
     private boolean masked;
     private int gathersize;
@@ -145,6 +146,11 @@ public class NodeImplementation implements Node{
     @Override
     public void setInfected(int i) {
         infected = i;
+    }
+
+    @Override
+    public int getDeath() {
+        return death;
     }
 
 }

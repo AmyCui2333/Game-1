@@ -50,4 +50,6 @@ public interface Node {
 
     void setInfected(int i);
 
+    int getDeath();
+
 }
