@@ -90,4 +90,13 @@ public class ModelImplement implements Model{
     public void setgathersize(Node node, int i) {
         node.setGatherSize(i);
     }
+
+    public void generateNodes(){
+        ArrayList<Node> Nodes = new ArrayList<Node>();
+        for(int i=1;i<10;i++){
+            Node node = new NodeImplementation();
+            Nodes.add(node);
+        }
+        locNodes = Nodes;
+    }
 }

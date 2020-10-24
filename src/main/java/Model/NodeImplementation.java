@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.geometry.Point2D;
+
 import java.util.ArrayList;
 
 public class NodeImplementation implements Node{
@@ -7,13 +9,15 @@ public class NodeImplementation implements Node{
     private double yloc;
     private int population;
     private int infected;
-    private ArrayList<NodeImplementation> connected;
+    private ArrayList<Node> connected;
     private boolean masked;
     private int gathersize;
     private boolean shutdown;
     private LocationType loctype;
 
+    public NodeImplementation(){
 
+    }
 
     @Override
     public LocationType getType() {
@@ -70,6 +74,11 @@ public class NodeImplementation implements Node{
     @Override
     public int getGatherSize() {
         return gathersize;
+    }
+
+    @Override
+    public Point2D getloc() {
+        return new Point2D(xloc, yloc);
     }
 
 }

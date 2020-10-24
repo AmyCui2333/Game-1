@@ -1,6 +1,9 @@
 package Model;
 
+import javafx.geometry.Point2D;
+
 public interface Node {
+
     LocationType getType();
 
     double getxloc();
@@ -23,5 +26,6 @@ public interface Node {
 
     int getGatherSize();
 
+    Point2D getloc();
 
 }
