@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class ModelImplement implements Model{
@@ -15,7 +16,7 @@ public class ModelImplement implements Model{
 
     @Override
     public ArrayList<Node> getNodeinRange(double minx, double maxx, double miny, double maxy) {
-        ArrayList<Node> result=new ArrayList<Node>();
+        ArrayList<Node> result= new ArrayList<>();
         for (Node node: locNodes){
             if(minx<=node.getxloc()&&node.getxloc()<=maxx&&miny<=node.getyloc()&&node.getyloc()<=maxy){
                 result.add(node);
@@ -81,6 +82,7 @@ public class ModelImplement implements Model{
     @Override
     public void dayPass() {
         day += 1;
+        travel();
     }
 
     @Override
@@ -109,15 +111,41 @@ public class ModelImplement implements Model{
 
     public void connectNodes(){
         for(Node node: locNodes){
-            Random rand = new Random();
+            Random random = new Random();
             ArrayList<Integer> randList = new ArrayList<>();
-            for (int i=1;i<4;i++){
-                int rand1 = rand.nextInt(locNodes.size());
-                if (node != locNodes.get(rand1) && !node.getConnected().contains(locNodes.get(rand1))) {
-                    node.addConnected(locNodes.get(rand1));
-                    locNodes.get(rand1).addConnected(node);
+            for (int i=1;i<5;i++){
+                int randint = random.nextInt(locNodes.size());
+                randList.add(randint);
+            }
+            for (int rand: randList) {
+                if (node != locNodes.get(rand) && !node.getConnected().contains(locNodes.get(rand))) {
+                    node.addConnected(locNodes.get(rand));
+                    locNodes.get(rand).addConnected(node);
+                    String msg = "connected between "+ rand + " and "+ locNodes.indexOf(node);
+                    System.out.println(msg);
                 }
             }
+        }
+    }
+
+    public void travel(){
+        Random random = new Random();
+        ArrayList<Integer> randList = new ArrayList<>();
+        for (int i=1;i<3;i++){
+            int randint = random.nextInt(locNodes.size());
+            randList.add(randint);
+        }
+        for(int rand:randList){
+            Node start = locNodes.get(rand);
+            int popStart = start.getPopulation();
+            ArrayList<Node> connected = start.getConnected();
+            Random flow = new Random();
+            int nextNode = flow.nextInt(connected.size());
+            int flowsize = flow.nextInt(popStart);
+            start.setPopulation(popStart-flowsize);
+            Node next = locNodes.get(nextNode);
+            next.addPopulation(flowsize);
+            System.out.print(flowsize + " moved from" + start + " to " + next);
         }
     }
 }

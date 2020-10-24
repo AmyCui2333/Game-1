@@ -64,14 +64,12 @@ public class NodeImplementation implements Node{
 
     @Override
     public void setShutDown() {
-        if (shutdown) shutdown = false;
-        else shutdown = true;
+        shutdown = !shutdown;
     }
 
     @Override
     public void setMasked() {
-        if (masked) masked = false;
-        else masked = true;
+        masked = !masked;
     }
 
     @Override
@@ -107,6 +105,16 @@ public class NodeImplementation implements Node{
     @Override
     public ArrayList<Node> getConnected() {
         return connected;
+    }
+
+    @Override
+    public void setPopulation(int pop) {
+        population = pop;
+    }
+
+    @Override
+    public void addPopulation(int pop) {
+        population += pop;
     }
 
 }

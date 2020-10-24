@@ -36,4 +36,8 @@ public interface Node {
 
     ArrayList<Node> getConnected();
 
+    void setPopulation(int pop);
+
+    void addPopulation(int pop);
+
 }
