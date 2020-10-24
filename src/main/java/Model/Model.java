@@ -30,4 +30,6 @@ public interface Model {
 
     int getGatherSize(Node node);
 
+    int getNodePopulation(Node node);
+
 }

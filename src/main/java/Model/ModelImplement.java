@@ -96,6 +96,11 @@ public class ModelImplement implements Model{
     }
 
     @Override
+    public int getNodePopulation(Node node) {
+        return node.getPopulation();
+    }
+
+    @Override
     public void setGatherSize(Node node, int i) {
         node.setGatherSize(i);
     }
