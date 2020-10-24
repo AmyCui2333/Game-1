@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Controller;
 import Model.Model;
 import Model.Node;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class ViewImpl extends  View
     private double minX, maxX, minY, maxY;
     private ArrayList<Node> nodesOnScreen;
     private final Model model;
+    private final double nodeSize = .1;
+    Controller controller;
     public ViewImpl(Model m)
     {
         this.model = m;
@@ -90,7 +94,27 @@ public class ViewImpl extends  View
             minY -= heightDiff / 2;
             draw();
         });
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->
+        {
+            var viewPt = scrToView(e.getX(), e.getY());
+            Node selected = null;
+            for(Node n : nodesOnScreen)
+            {
+                if(viewPt.distance(n.getloc()) < nodeSize)
+                {
+                    selected = n;
+                    break;
+                }
+            }
+            controller.updateSelected(selected);
+            System.out.println(selected);
+        });
         canv.setVisible(true);
+    }
+    @Override
+    public void setController(Controller c)
+    {
+        this.controller = c;
     }
     private double scrToViewX(double scrX)
     {
@@ -98,7 +122,7 @@ public class ViewImpl extends  View
     }
     private double scrToViewY(double scrY)
     {
-        return (scrY / getHeight()) * (minY - maxY) + minY;
+        return (scrY / getHeight()) * (minY - maxY) + maxY;
     }
     private double viewToScrX(double vwX)
     {
@@ -108,9 +132,13 @@ public class ViewImpl extends  View
     {
         return (vwY - maxY) / (minY - maxY) * getHeight();
     }
+    private Point2D scrToView(double x, double y)
+    {
+        return new Point2D(scrToViewX(x), scrToViewY(y));
+    }
     private Point2D scrToView(Point2D p)
     {
-        return new Point2D(scrToViewX(p.getX()), scrToViewY(p.getY()));
+        return scrToView(p.getX(), p.getY());
     }
     private Point2D viewToScr(Point2D p)
     {
@@ -131,7 +159,7 @@ public class ViewImpl extends  View
     }
 
     @Override
-    public void draw()
+    public synchronized void draw()
     {
         gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
         gc.setStroke(Color.BLACK);
@@ -153,10 +181,33 @@ public class ViewImpl extends  View
         nodesOnScreen = model.getNodeinRange(minX, maxX, minY, maxY);
         gc.setStroke(Color.BLUEVIOLET);
         gc.setFill(Color.BLUEVIOLET);
+        Color c;
         for(Node n : nodesOnScreen)
         {
+            switch (n.getType())
+            {
+                case HOSPITAL:
+                    c = Color.RED;
+                    break;
+                case RECREATION:
+                    c = Color.BLUE;
+                    break;
+                case GROCERYSTORE:
+                    c = Color.GREEN;
+                    break;
+                case NEIGHBOURHOOD:
+                default:
+                    c = Color.BLACK;
+            }
             var pt = viewToScr(n.getloc());
-            gc.fillOval(pt.getX(), pt.getY(), .05 * getWidth() / (maxX - minX), .05 *  getHeight() / (maxY - minY));
+            gc.setFill(c);
+            double w = nodeSize * getWidth() / (maxX - minX);
+            double h = nodeSize *  getHeight() / (maxY - minY);
+            gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
+            gc.setStroke(Color.WHITE);
+            gc.strokeText(String.valueOf(n.getPopulation()), pt.getX() - 4, pt.getY() + h - 4);
+            gc.setStroke(Color.RED);
+            gc.strokeText(String.valueOf(n.getInfected()), pt.getX() - 4, pt.getY() + h + 12);
         }
     }
 }

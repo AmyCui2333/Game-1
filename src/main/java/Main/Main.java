@@ -34,7 +34,8 @@ public class Main extends Application
         //TODO CONSTRUCT MODEL
         model = ModelFac.getModel();
         view = ViewFac.getView(model);
-        controller = ControllerFac.getCont(model);
+        controller = ControllerFac.getCont(model, view);
+        view.setController(controller);
         mainH.getChildren().addAll(controller, view);
         primaryStage.setTitle("Game");
         //set scene

@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.Model;
+import Model.Node;
+import View.View;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -10,8 +12,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -27,9 +31,14 @@ public class ControllerImpl extends Controller
     private final Model model;
     private final Timeline gogogo;
     private double secondsPerDay;
-    public ControllerImpl(Model m)
+    private View view;
+    private Node selected;
+    private GridPane selectedG;
+    private Label population, infected, dead;
+    public ControllerImpl(Model m, View v)
     {
         model = m;
+        view = v;
         secondsPerDay = 1;
         VBox mainV = new VBox();
         Label title = new Label("Controls");
@@ -52,6 +61,7 @@ public class ControllerImpl extends Controller
         stepBtn.setOnAction(e ->
         {
             model.dayPass();
+            update();
         });
         gogogo = new Timeline(
                 new KeyFrame(Duration.seconds(secondsPerDay), a ->
@@ -62,17 +72,54 @@ public class ControllerImpl extends Controller
                                 {
                                     model.dayPass();
                                 }
+                                update();
                             }
                         }));
         gogogo.setCycleCount(Timeline.INDEFINITE);
         gogogo.play();
+        Slider spd = new Slider(0, 10, 1);
+        spd.valueProperty().addListener((arg, oldVal, newVal) -> gogogo.setRate(newVal.doubleValue()));
+
+        selectedG = new GridPane();
+        selectedG.setVisible(false);
+        Label pop = new Label("Population:");
+        Label inf = new Label("Infected");
+        Label ded = new Label("Dead:");
+        population = new Label();
+        infected = new Label();
+        dead = new Label();
+        selectedG.add(pop, 0, 0);
+        selectedG.add(inf, 0, 1);
+        selectedG.add(ded, 0, 2);
+        selectedG.add(population, 1, 0);
+        selectedG.add(infected, 1, 1);
+        selectedG.add(dead, 1, 2);
+
         mainV.setPadding(new Insets(20));
         mainV.setSpacing(20);
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(30);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(stepBtn, playPause);
-        mainV.getChildren().addAll(title, buttonBox, new Separator());
+        mainV.getChildren().addAll(title, buttonBox, spd, new Separator(), selectedG);
         this.getChildren().add(mainV);
+    }
+    private void update()
+    {
+        if(selected != null)
+        {
+            selectedG.setVisible(true);
+            population.setText(String.valueOf(selected.getPopulation()));
+            infected.setText(String.valueOf(selected.getInfected()));
+            dead.setText("unimplemented");
+        } else selectedG.setVisible(false);
+        view.draw();
+    }
+
+    @Override
+    public void updateSelected(Node n)
+    {
+        this.selected = n;
+        update();
     }
 }
