@@ -14,7 +14,6 @@ public class ViewImpl extends  View
     private double minX, maxX, minY, maxY;
     public ViewImpl(Model m)
     {
-        super(m);
         canv = new Canvas();
         this.getChildren().add(canv);
         gc = canv.getGraphicsContext2D();

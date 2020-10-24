@@ -7,7 +7,6 @@ import javafx.scene.layout.StackPane;
 
 public abstract class View extends Pane
 {
-    public View(Model m){}
     /**
      * Draws the current state on the screen
      */

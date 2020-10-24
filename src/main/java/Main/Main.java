@@ -1,10 +1,13 @@
 package Main;
 
 
+import Controller.ControllerFac;
+import Controller.Controller;
 import Model.Model;
 import View.View;
 import View.ViewFac;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,7 +22,7 @@ public class Main extends Application
 {
     private View view;
     private Model model;
-    private VBox controlsBox;
+    private Controller controller;
     @Override
     public void start(Stage primaryStage) throws Exception
     {
@@ -30,15 +33,18 @@ public class Main extends Application
         //TODO CONSTRUCT MODEL
         model = null;
         view = ViewFac.getView(model);
-        controlsBox = new VBox();
-        mainH.getChildren().addAll(controlsBox, view);
+        controller = ControllerFac.getCont(model);
+        mainH.getChildren().addAll(controller, view);
         primaryStage.setTitle("Game");
         //set scene
 
-        view.prefWidthProperty().bind(root.widthProperty().subtract(controlsBox.widthProperty()));
+        view.prefWidthProperty().bind(root.widthProperty().subtract(controller.widthProperty()));
         view.prefHeightProperty().bind(root.heightProperty());
         view.setVisible(true);
-        primaryStage.setScene(new Scene(root, 1200, 800));
+        mainH.setPadding(new Insets(20));
+        mainH.setSpacing(10);
+        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setFullScreen(true);
         primaryStage.show();
 
     }
