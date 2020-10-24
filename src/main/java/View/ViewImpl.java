@@ -80,11 +80,10 @@ public class ViewImpl extends  View
         });
         this.addEventHandler(ZoomEvent.ANY, e ->
         {
-            System.out.println("zoooommmmm");
             double width = maxX - minX;
             double height = maxY - minY;
-            double widthDiff = width * (1 + e.getZoomFactor());
-            double heightDiff = height * (1 + e.getZoomFactor());
+            double widthDiff = width * (1 + 5 * e.getZoomFactor());
+            double heightDiff = height * (1 + 5 * e.getZoomFactor());
             maxX += widthDiff / 2;
             minX -= widthDiff / 2;
             maxY += heightDiff / 2;
