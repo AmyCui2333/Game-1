@@ -76,7 +76,10 @@ public class ModelImplement implements Model{
 
     @Override
     public boolean getMasked() {
-        return locNodes.get(0).getMasked();
+        for (Node n:locNodes){
+            if (!n.getMasked()) return false;
+        }
+        return true;
     }
 
     @Override
