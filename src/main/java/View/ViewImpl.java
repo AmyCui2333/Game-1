@@ -27,7 +27,7 @@ public class ViewImpl extends  View
     private double minX, maxX, minY, maxY;
     private ArrayList<Node> nodesOnScreen;
     private final Model model;
-    private final double nodeSize = .02;
+    private final double nodeSize = .05;
     Controller controller;
     boolean started = false;
     Image welcome, ecoloss, deathloss, win;
