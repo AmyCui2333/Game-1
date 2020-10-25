@@ -181,35 +181,38 @@ public class ModelImplement implements Model{
             ArrayList<Node> connected = start.getConnected();
             Random flow = new Random();
             int nextNode = flow.nextInt(connected.size());
-            double flowPop, flowRec, flowInf;
+            double flowSus, flowRec, flowInf;
             try
             {
-                flowPop = Math.max(flow.nextInt((int) start.getPopulation() / 4), 0);
+                flowSus = Math.max(flow.nextInt((int) start.getSusceptible() / 5), 0);
             } catch (IllegalArgumentException i)
             {
-                flowPop = 0;
+                flowSus = 0;
             }
             try
             {
-                flowRec = Math.max(flow.nextInt((int) Math.min(start.getRecovered() / 2, flowPop)), 0);
+                flowRec = Math.max(flow.nextInt((int) start.getRecovered() / 4), 0);
             } catch (IllegalArgumentException i)
             {
                 flowRec = 0;
             }
             try
             {
-                flowInf = Math.max(flow.nextInt((int) Math.min(start.getInfected() / 5, flowPop - flowRec)), 0);
+                flowInf = Math.max(flow.nextInt((int) start.getInfected() / 10), 0);
             } catch (IllegalArgumentException i)
             {
                 flowInf = 0;
             }
+            double flowPop = flowSus + flowRec + flowInf;
             start.setPopulation(popStart - flowPop);
             start.setInfected(infStart - flowInf);
             start.setRecovered(start.getRecovered() - flowRec);
+            start.setSusceptible(start.getSusceptible() - flowSus);
             Node next = locNodes.get(nextNode);
-            next.addPopulation(flowPop);
+            next.setPopulation(next.getPopulation() + flowPop);
             next.setInfected(next.getInfected() + flowInf);
             next.setRecovered(next.getRecovered() + flowRec);
+            next.setSusceptible(next.getSusceptible() + flowSus);
             System.out.println(flowPop + " moved from" + start + " to " + next);
         }
     }

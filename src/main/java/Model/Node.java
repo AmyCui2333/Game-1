@@ -3,57 +3,162 @@ package Model;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public interface Node {
+public abstract class Node {
 
-    LocationType getType();
+    protected double xloc;
+    protected double yloc;
+    protected double population;
+    protected double infected;
+    protected double susceptible;
+    protected double recovered;
+    protected double death;
+    protected ArrayList<Node> connected;
+    protected boolean masked;
+    protected int gathersize;
+    protected boolean shutdown;
+    protected LocationType loctype;
+    protected double transProb;
+    protected double contactRate;
+    protected double revenue;
 
-    double getxloc();
+    public Node()
+    {
+        double min = -1.0;
+        double max = 1.0;
+        xloc = Math.random() * (max - min) + min;
+        yloc = Math.random() * (max - min) + min;
+        Random rand = new Random();
+        population = rand.nextInt(100000);
+        infected = rand.nextInt(10);
+        connected = new ArrayList<>();
+        masked = false;
+        shutdown = false;
+    }
+    public LocationType getType()
+    {
+        return this.loctype;
+    }
 
-    double getyloc();
+    public double getxloc()
+    {
+        return this.xloc;
+    }
 
-    double getPopulation();
+    public double getyloc()
+    {
+        return this.yloc;
+    }
 
-    double getInfected();
+    public double getPopulation()
+    {
+        return this.population;
+    }
 
-    boolean getShutDown();
+    public double getInfected()
+    {
+        return this.infected;
+    }
 
-    void setShutDown(boolean bool);
+    public boolean getShutDown()
+    {
+        return this.shutdown;
+    }
 
-    void setMasked(boolean bool);
+    public void setShutDown(boolean bool)
+    {
+        this.shutdown = bool;
+    }
 
-    boolean getMasked();
+    public void setMasked(boolean bool)
+    {
+        this.masked = bool;
+    }
 
-    void setGatherSize(int i);
+    public boolean getMasked()
+    {
+        return this.masked;
+    }
 
-    int getGatherSize();
+    public void setGatherSize(int i)
+    {
+        this.gathersize = i;
+    }
 
-    Point2D getloc();
+    public int getGatherSize()
+    {
+        return this.gathersize;
+    }
 
-    void addConnected(Node node);
+    public Point2D getloc()
+    {
+        return new Point2D(xloc, yloc);
+    }
 
-    void removeConnected(Node node);
+    public void addConnected(Node node)
+    {
+        this.connected.add(node);
+    }
 
-    ArrayList<Node> getConnected();
+    public void removeConnected(Node node)
+    {
+        this.connected.remove(node);
+    }
 
-    void setPopulation(double pop);
+    public ArrayList<Node> getConnected()
+    {
+        return this.connected;
+    }
 
-    void addPopulation(double pop);
+    public void setPopulation(double pop)
+    {
+        this.population = Math.max(pop, 0);
+    }
 
-    double getSusceptible();
+    public void addPopulation(double pop)
+    {
+        this.population += pop;
+    }
 
-    void setSusceptible(double i);
+    public double getSusceptible()
+    {
+        return this.susceptible;
+    }
 
-    void setRecovered(double i);
+    public void setSusceptible(double i)
+    {
+        this.susceptible = Math.max(i, 0);
+    }
 
-    double getRecovered();
+    public void setRecovered(double i)
+    {
+        this.recovered = Math.max(i, 0);
+    }
 
-    void setInfected(double i);
+    public double getRecovered()
+    {
+        return this.recovered;
+    }
 
-    double getDeath();
+    public void setInfected(double i)
+    {
+        this.infected = Math.max(i, 0);
+    }
 
-    void setDeath(double i);
+    public double getDeath()
+    {
+        return this.death;
+    }
 
-    double getbeta();
+    public void setDeath(double i)
+    {
+        this.death = Math.max(i, 0);
+    }
+
+    public double getbeta()
+    {
+        return transProb * contactRate;
+    }
 
 }
