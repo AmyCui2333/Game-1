@@ -66,6 +66,7 @@ public class ModelImplement implements Model{
         this.death = death;
         this.recovered = recover;
         this.gdp = revenue;
+        System.out.println(revenue);
     }
 
 

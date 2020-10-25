@@ -39,7 +39,7 @@ public abstract class Node {
         susceptible = population-infected;
         death = 0;
         transProb = 0.155;
-        revenue = 76*(susceptible+recovered);
+        revenue = 76*susceptible;
     }
 
     public LocationType getType()
@@ -170,7 +170,7 @@ public abstract class Node {
     }
 
     public double getRevenue(){
-        double tmp = revenue;
+        double tmp = 76*(this.susceptible+this.recovered);
         if (masked) tmp *= .9;
         if (shutdown) tmp *= .4;
         return tmp;
