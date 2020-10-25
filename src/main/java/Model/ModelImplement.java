@@ -15,6 +15,7 @@ public class ModelImplement implements Model{
     double gamma;
     double deathRate=0.034;
     double gdp;
+    double initGDP;
 
     ModelImplement(){
         generateNodes();
@@ -22,6 +23,7 @@ public class ModelImplement implements Model{
         day = 0;
         gamma = 0.08;
         update();
+        initGDP = gdp;
     }
 
     @Override
@@ -126,9 +128,9 @@ public class ModelImplement implements Model{
 
     @Override
     public GameState getState() {
-        if(death > .2 * population){
+        if(death > .04 * population){
             return GameState.DEATHLOSS;
-        } else if (false)
+        } else if (getGDP() < .6 * initGDP)
         {
             return GameState.ECOLOSS;
         } else if ((int) getInfected() == 0 || getDay() > 200)
@@ -210,6 +212,7 @@ public class ModelImplement implements Model{
             for(Node n : start.getConnected())
                 if(!n.shutdown)
                     connected.add(n);
+            if(connected.size() == 0) return;
             Random flow = new Random();
             int nextNode = flow.nextInt(connected.size());
             double flowSus, flowRec, flowInf;

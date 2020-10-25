@@ -207,6 +207,13 @@ public class ControllerImpl extends Controller
     }
 
     @Override
+    public void stop()
+    {
+        gogogo.stop();
+
+    }
+
+    @Override
     public void updateSelected(Node n)
     {
         this.selected = n;
