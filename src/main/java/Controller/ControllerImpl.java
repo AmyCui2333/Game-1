@@ -196,6 +196,7 @@ public class ControllerImpl extends Controller
             {
                 recreation.setText("Open Recreation");
             }
+            update();
         });
         grocery.setOnAction(e ->
         {
@@ -207,14 +208,17 @@ public class ControllerImpl extends Controller
             {
                 grocery.setText("Open Grocery");
             }
+            update();
         });
         shutNei.setOnAction(e ->
         {
             model.setHood();
+            update();
         });
         openNei.setOnAction(e ->
         {
             model.openHood();
+            update();
         });
         GridPane key = new GridPane();
         var gro = new Label("Grocery");
