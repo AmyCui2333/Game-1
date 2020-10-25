@@ -34,7 +34,7 @@ public abstract class Node {
         infected = rand.nextInt(30);
         connected = new ArrayList<>();
         masked = false;
-        shutdown = true;
+        shutdown = false;
         recovered = 0;
         susceptible = population-infected;
         death = 0;

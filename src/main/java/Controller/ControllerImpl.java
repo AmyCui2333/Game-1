@@ -89,11 +89,11 @@ public class ControllerImpl extends Controller
             update();
         });
         var dispInf = new GridPane();
-        dispInf.setVgap(10);
+        dispInf.setVgap(4);
         dispInf.setHgap(20);
         selectedG = new GridPane();
         selectedG.setHgap(20);
-        selectedG.setVgap(10);
+        selectedG.setVgap(4);
         selectedG.setVisible(false);
         Label pop = new Label("Population:");
         Label inf = new Label("Infected");
@@ -177,7 +177,7 @@ public class ControllerImpl extends Controller
         selectedG.add(shutdown, 1, 5);
 
         mainV.setPadding(new Insets(20));
-        mainV.setSpacing(20);
+        mainV.setSpacing(5);
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(30);
         buttonBox.setAlignment(Pos.CENTER);
