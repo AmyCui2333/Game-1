@@ -198,9 +198,10 @@ public class ModelImplement implements Model{
     public void setHood() {
         int i = 0;
         for (Node n : locNodes){
-            if (n.loctype==LocationType.NEIGHBOURHOOD&&!n.getShutDown()&&i<10)
+            if (n.loctype == LocationType.NEIGHBOURHOOD && !n.getShutDown() && i<10)
             {
                 n.setShutDown(true);
+                i++;
             }
         }
     }
