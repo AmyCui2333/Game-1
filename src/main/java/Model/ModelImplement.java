@@ -27,7 +27,7 @@ public class ModelImplement implements Model{
     public void dayPass() {
         ++day;
         spreadWithin();
-//        travel();
+        travel();
         update();
     }
 

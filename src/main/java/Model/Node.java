@@ -30,8 +30,8 @@ public abstract class Node {
         xloc = Math.random() * (max - min) + min;
         yloc = Math.random() * (max - min) + min;
         Random rand = new Random();
-        population = rand.nextInt(1000);
-        infected = rand.nextInt(10);
+        population = rand.nextInt(100000);
+        infected = rand.nextInt(50);
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
@@ -157,7 +157,14 @@ public abstract class Node {
 
     public double getbeta()
     {
-        return transProb * contactRate;
+        return gettransProb() * contactRate;
+    }
+
+    private double gettransProb(){
+        double tmp = transProb;
+        if (masked) tmp *= .7;
+        if (shutdown) tmp *= .4;
+        return tmp;
     }
 
 }
