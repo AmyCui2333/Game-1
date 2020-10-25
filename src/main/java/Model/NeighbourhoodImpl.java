@@ -41,7 +41,7 @@ public class NeighbourhoodImpl implements Node{
         recovered = 0;
         susceptible = population;
         death = 0;
-        transProb = 0.155;
+        transProb = 0.06;
         contactRate = 3;
     }
 
