@@ -26,8 +26,9 @@ public class ModelImplement implements Model{
     @Override
     public void dayPass() {
         ++day;
-        spreadWithin();
-//        travel();
+        if((int) getInfected() > 0)
+            spreadWithin();
+        travel();
         update();
     }
 
@@ -234,7 +235,7 @@ public class ModelImplement implements Model{
                         n.population = (pop - newDeath);
                     }
                     if(n.infected + n.susceptible + n.recovered  - 1 > n.population)
-                        System.out.println("BAD");
+                        throw new Error();
                 }
             }
         }
