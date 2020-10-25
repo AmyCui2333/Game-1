@@ -127,11 +127,19 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public boolean getState() {
-        if(population/death<2){
-            return false;
+    public GameState getState() {
+        if(death > .2 * population){
+            return GameState.DEATHLOSS;
+        } else if (false)
+        {
+            return GameState.ECOLOSS;
+        } else if ((int) getInfected() == 0)
+        {
+            return GameState.WIN;
+        } else
+        {
+            return GameState.PLAYING;
         }
-        return true;
     }
 
     @Override

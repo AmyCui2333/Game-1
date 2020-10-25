@@ -34,7 +34,7 @@ public interface Model {
 
     double getNodePopulation(Node node);
 
-    boolean getState();
+    GameState getState();
 
     double getRecovered();
 
