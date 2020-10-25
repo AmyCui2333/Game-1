@@ -31,7 +31,6 @@ public class ControllerImpl extends Controller
     private final Timeline gogogo;
     private double secondsPerDay;
     private View view;
-    private Node selected;
     private GridPane selectedG;
     private final Label population, infected, dead, recovered, popuM, infeM, deadM, recoM;
     private final CheckBox mask, shutdown, maskAll;
@@ -77,7 +76,7 @@ public class ControllerImpl extends Controller
                         }));
         gogogo.setCycleCount(Timeline.INDEFINITE);
         gogogo.play();
-        Slider spd = new Slider(1, 1300, 1);
+        Slider spd = new Slider(1, 10, 1);
         spd.valueProperty().addListener((arg, oldVal, newVal) -> gogogo.setRate(newVal.doubleValue()));
         maskAll = new CheckBox("Mask All");
         maskAll.selectedProperty().addListener((arg, oldVal, newVal) ->
@@ -176,17 +175,17 @@ public class ControllerImpl extends Controller
         if(selected != null)
         {
             selectedG.setVisible(true);
-            population.setText(String.valueOf(selected.getPopulation()));
-            infected.setText(String.valueOf(selected.getInfected()));
-            dead.setText(String.valueOf(selected.getDeath()));
-            recovered.setText(String.valueOf(selected.getRecovered()));
+            population.setText(String.valueOf((int) selected.getPopulation()));
+            infected.setText(String.valueOf((int) selected.getInfected()));
+            dead.setText(String.valueOf((int) selected.getDeath()));
+            recovered.setText(String.valueOf((int) selected.getRecovered()));
             mask.setSelected(selected.getMasked());
             shutdown.setSelected(selected.getShutDown());
         } else selectedG.setVisible(false);
-        popuM.setText(String.valueOf(model.getPopulation()));
-        infeM.setText(String.valueOf(model.getInfected()));
-        deadM.setText(String.valueOf(model.getDeath()));
-        recoM.setText(String.valueOf(model.getRecovered()));
+        popuM.setText(String.valueOf((int) model.getPopulation()));
+        infeM.setText(String.valueOf((int) model.getInfected()));
+        deadM.setText(String.valueOf((int) model.getDeath()));
+        recoM.setText(String.valueOf((int) model.getRecovered()));
         maskAll.setSelected(model.getMasked());
         view.draw();
     }

@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class ViewImpl extends  View
     private double minX, maxX, minY, maxY;
     private ArrayList<Node> nodesOnScreen;
     private final Model model;
-    private final double nodeSize = .1;
+    private final double nodeSize = .02;
     Controller controller;
     public ViewImpl(Model m)
     {
@@ -182,9 +183,12 @@ public class ViewImpl extends  View
         p4 = new Point2D(1, -1);
         drawLine(p1, p3);
         drawLine(p2, p4);*/
+
+        double w = nodeSize * getWidth() / (maxX - minX);
+        double h = nodeSize *  getHeight() / (maxY - minY);
         double width = maxX - minX;
         double height = maxY - minY;
-        nodesOnScreen = model.getNodeinRange(minX - width / 5, maxX + width / 5, minY - height / 5, maxY + height / 5);
+        nodesOnScreen = model.getNodeinRange(minX - w * 3, maxX + w * 3, minY - h * 3, maxY + h * 3);
         gc.setStroke(Color.BLUEVIOLET);
         gc.setFill(Color.BLUEVIOLET);
         Color c;
@@ -206,17 +210,36 @@ public class ViewImpl extends  View
                     c = Color.BLACK;
             }
             var pt = viewToScr(n.getloc());
+
+            gc.setFont(new Font(h / 3));
+            double  sz = gc.getFont().getSize() / 2;
+            if(controller != null && n == controller.selected)
+            {
+                gc.setFill(Color.RED);
+                gc.fillOval(pt.getX() - w / 2 - 3, pt.getY() + h / 2 - 3, w + 6, h + 6);
+            }
             gc.setFill(c);
             gc.setStroke(c);
-            double w = nodeSize * getWidth() / (maxX - minX);
-            double h = nodeSize *  getHeight() / (maxY - minY);
             gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
-            gc.setStroke(Color.WHITE);
-            gc.strokeText(String.valueOf(n.getPopulation()), pt.getX() - 4, pt.getY() + h - 8);
-            gc.setStroke(Color.RED);
-            gc.strokeText(String.valueOf(n.getInfected()), pt.getX() - 4, pt.getY() + h + 8);
-            gc.setStroke(Color.GREEN);
-            gc.strokeText(String.valueOf(n.getRecovered()), pt.getX() - 4, pt.getY() + h + 24);
+            gc.setStroke(Color.BLACK);
+            gc.setFill(Color.WHITE);
+            String popStr = String.valueOf((int) n.getPopulation());
+            Text tmp = new Text();
+            tmp.setFont(gc.getFont());
+            tmp.setText(popStr);
+            double popWidth = tmp.getLayoutBounds().getWidth();
+            gc.fillText(popStr, pt.getX() - popWidth/2, pt.getY() + 3 * h / 4 + sz);
+            gc.setFill(Color.RED);
+            String infStr = String.valueOf((int) n.getInfected());
+            tmp.setText(infStr);
+            double infWidth = tmp.getLayoutBounds().getWidth();
+            gc.fillText(infStr, pt.getX() - infWidth/2, pt.getY() + h + sz);
+            gc.setFill(Color.GREEN);
+            String recStr = String.valueOf((int) n.getRecovered());
+            tmp.setText(recStr);
+            double recWidth = tmp.getLayoutBounds().getWidth();
+            gc.fillText(recStr, pt.getX() - recWidth/2, pt.getY() + 5 * h / 4 + sz);
+
         }
         gc.setFont(new Font(30));
         gc.setStroke(Color.BLACK);
