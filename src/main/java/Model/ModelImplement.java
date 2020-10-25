@@ -29,7 +29,6 @@ public class ModelImplement implements Model{
         ++day;
         spreadWithin();
 //        travel();
-        dieAndRecover();
         update();
     }
 
@@ -199,30 +198,19 @@ public class ModelImplement implements Model{
                     int susStart = n.getSusceptible();
                     int pop = n.getPopulation();
                     int death = n.getDeath();
-                    int spread = (int)((n.getbeta()*susStart*infectStart)/pop-gamma*infectStart);
+                    int spread = (int) Math.round((n.getbeta()*susStart*infectStart)/pop-gamma*infectStart);
                     n.setInfected(infectStart+spread);
-                    int newsus = (int)(susStart-(n.getbeta()*susStart*infectStart)/pop);
+                    int newsus = susStart-(int) Math.round((n.getbeta()*susStart*infectStart)/pop);
                     n.setSusceptible(newsus);
-                    int recoverStart = n.getRecovered();
-                    int newRecover = (int)(gamma*infectStart*(1.0-deathRate));
-                    n.setRecovered(recoverStart+newRecover);
-                    int newDeath = (int)(gamma*infectStart*deathRate);
-                    n.setDeath(death+newDeath);
-                    n.setPopulation(pop-newDeath);
+                    if (day>=14) {
+                        int recoverStart = n.getRecovered();
+                        int newRecover = (int) Math.round(gamma * infectStart * (1.0 - deathRate));
+                        n.setRecovered(recoverStart + newRecover);
+                        int newDeath = (int) Math.round(gamma * infectStart * deathRate);
+                        n.setDeath(death + newDeath);
+                        n.setPopulation(pop - newDeath);
+                    }
                 }
-            }
-        }
-    }
-    //TODO: Set a rate of spread to update each node
-
-    public void dieAndRecover(){
-        if(day>=14) {
-            for (Node n : locNodes) {
-                int infectStart = n.getInfected();
-                int death = n.getDeath();
-                int recoverStart = n.getRecovered();
-                int newRecover = (int)(0.08*infectStart*(1-0.034));
-
             }
         }
     }
