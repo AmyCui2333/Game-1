@@ -150,7 +150,7 @@ public class ModelImplement implements Model{
 
     public void generateNodes(){
         ArrayList<Node> Nodes = new ArrayList<>();
-        for(int i=1;i<100;i++){
+        for(int i=1;i<70;i++){
             Node node = new NeighbourhoodImpl();
             Nodes.add(node);
         }
