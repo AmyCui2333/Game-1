@@ -165,14 +165,13 @@ public abstract class Node {
     private double gettransProb(){
         double tmp = transProb;
         if (masked) tmp *= .8;
-        if (shutdown) tmp *= .3;
+        if (shutdown) tmp *= .27;
         return tmp;
     }
 
     public double getRevenue(){
         double tmp = 76*(this.susceptible+this.recovered);
-        if (masked) tmp *= .8;
-        if (shutdown) tmp *= .4;
+        if (shutdown) tmp *= .6;
         return tmp;
     }
 
