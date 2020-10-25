@@ -30,8 +30,8 @@ public abstract class Node {
         xloc = Math.random() * (max - min) + min;
         yloc = Math.random() * (max - min) + min;
         Random rand = new Random();
-        population = rand.nextInt(100000);
-        infected = rand.nextInt(50);
+        population = rand.nextInt(10000);
+        infected = rand.nextInt(30);
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
@@ -39,7 +39,9 @@ public abstract class Node {
         susceptible = population-infected;
         death = 0;
         transProb = 0.155;
+        revenue = 76*(susceptible+recovered);
     }
+
     public LocationType getType()
     {
         return this.loctype;
@@ -162,7 +164,14 @@ public abstract class Node {
 
     private double gettransProb(){
         double tmp = transProb;
-        if (masked) tmp *= .7;
+        if (masked) tmp *= .65;
+        if (shutdown) tmp *= .3;
+        return tmp;
+    }
+
+    public double getRevenue(){
+        double tmp = revenue;
+        if (masked) tmp *= .9;
         if (shutdown) tmp *= .4;
         return tmp;
     }

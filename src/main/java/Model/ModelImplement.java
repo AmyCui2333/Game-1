@@ -14,6 +14,7 @@ public class ModelImplement implements Model{
     double recovered;
     double gamma;
     double deathRate=0.034;
+    double gdp;
 
     ModelImplement(){
         generateNodes();
@@ -52,17 +53,19 @@ public class ModelImplement implements Model{
         double death = 0;
         double infect = 0;
         double recover = 0;
+        double revenue = 0;
         for (Node node: locNodes){
             pop += node.getPopulation();
             death += node.getDeath();
             infect += node.getInfected();
             recover += node.getRecovered();
+            revenue += node.getRevenue();
         }
         this.population = pop;
         this.infected = infect;
         this.death = death;
         this.recovered = recover;
-
+        this.gdp = revenue;
     }
 
 
@@ -111,11 +114,6 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public void skipDay() {
-
-    }
-
-    @Override
     public int getGatherSize(Node node) {
         return node.getGatherSize();
     }
@@ -139,6 +137,11 @@ public class ModelImplement implements Model{
     }
 
     @Override
+    public double getGDP() {
+        return gdp;
+    }
+
+    @Override
     public double getDeath() {
         return death;
     }
@@ -150,8 +153,21 @@ public class ModelImplement implements Model{
 
     public void generateNodes(){
         ArrayList<Node> Nodes = new ArrayList<>();
-        for(int i=1;i<70;i++){
+        for(int i=1;i<81;i++){
             Node node = new NeighbourhoodImpl();
+            Nodes.add(node);
+        }
+        for(int i=1;i<11;i++){
+            Node node = new GroceriesImpl();
+            Nodes.add(node);
+        }
+        locNodes = Nodes;
+        for(int i=1;i<6;i++){
+            Node node = new RecreateImpl();
+            Nodes.add(node);
+        }
+        for(int i=1;i<6;i++){
+            Node node = new HospitalImpl();
             Nodes.add(node);
         }
         locNodes = Nodes;

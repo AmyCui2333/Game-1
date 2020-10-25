@@ -26,8 +26,6 @@ public interface Model {
 
     void dayPass();
 
-    void skipDay();
-
     void setGatherSize(Node node, int i);
 
     int getGatherSize(Node node);
@@ -37,5 +35,7 @@ public interface Model {
     boolean getState();
 
     double getRecovered();
+
+    double getGDP();
 
 }
