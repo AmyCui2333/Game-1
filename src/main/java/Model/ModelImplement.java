@@ -27,7 +27,7 @@ public class ModelImplement implements Model{
     public void dayPass() {
         ++day;
         spreadWithin();
-        travel();
+//        travel();
         update();
     }
 
@@ -203,17 +203,13 @@ public class ModelImplement implements Model{
             {
                 flowInf = 0;
             }
-            double flowPop = flowSus + flowRec + flowInf;
-            start.setPopulation(popStart - flowPop);
-            start.setInfected(infStart - flowInf);
-            start.setRecovered(start.getRecovered() - flowRec);
-            start.setSusceptible(start.getSusceptible() - flowSus);
+            start.addInfected(-flowInf);
+            start.addRecovered(-flowRec);
+            start.addSusceptible(-flowSus);
             Node next = locNodes.get(nextNode);
-            next.setPopulation(next.getPopulation() + flowPop);
-            next.setInfected(next.getInfected() + flowInf);
-            next.setRecovered(next.getRecovered() + flowRec);
-            next.setSusceptible(next.getSusceptible() + flowSus);
-            System.out.println(flowPop + " moved from" + start + " to " + next);
+            next.addInfected(flowInf);
+            next.addRecovered(flowRec);
+            next.addSusceptible(flowSus);
         }
     }
 
@@ -226,18 +222,19 @@ public class ModelImplement implements Model{
                     double susStart = n.getSusceptible();
                     double pop = n.getPopulation();
                     double death = n.getDeath();
-                    double spread = (n.getbeta()*susStart*infectStart)/pop-gamma*infectStart;
-                    n.setInfected(infectStart+spread);
-                    double newsus = susStart-(n.getbeta()*susStart*infectStart)/pop;
-                    n.setSusceptible(newsus);
+                    double spread = (n.getbeta()*susStart*infectStart)/pop - gamma*infectStart;
+                    n.infected = (infectStart+spread);
+                    n.susceptible = (susStart-(n.getbeta()*susStart*infectStart)/pop);
                     {
                         double recoverStart = n.getRecovered();
                         double newRecover = gamma * infectStart * (1.0 - deathRate);
-                        n.setRecovered(recoverStart + newRecover);
+                        n.recovered = (recoverStart + newRecover);
                         double newDeath = gamma * infectStart * deathRate;
-                        n.setDeath(death + newDeath);
-                        n.setPopulation(pop - newDeath);
+                        n.death = (death + newDeath);
+                        n.population = (pop - newDeath);
                     }
+                    if(n.infected + n.susceptible + n.recovered  - 1 > n.population)
+                        System.out.println("BAD");
                 }
             }
         }
