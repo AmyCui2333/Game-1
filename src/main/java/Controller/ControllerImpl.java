@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -180,7 +182,69 @@ public class ControllerImpl extends Controller
         buttonBox.setSpacing(30);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(stepBtn, playPause);
-        mainV.getChildren().addAll(title, buttonBox, spd, new Separator(), dispInf, new Separator(), maskAll, new Separator(), selectedG);
+        Button recreation = new Button("Shut Recreation");
+        Button grocery = new Button("Shut Grocery");
+        Button shutNei = new Button("Shut 10 Neighbourhoods");
+        Button openNei = new Button("Open 10 Neighbourhoods");
+        recreation.setOnAction(e ->
+        {
+            //TODO SHUTDOWN NEIGHBOURHOODS IN MODEL
+            if(true)
+            {
+                recreation.setText("Shut Recreation");
+            } else
+            {
+                recreation.setText("Open Recreation");
+            }
+        });
+        grocery.setOnAction(e ->
+        {
+            //TODO MAKE IT WORK
+            if(true)
+            {
+                grocery.setText("Shut Grocery");
+            } else
+            {
+                grocery.setText("Open Recreation");
+            }
+        });
+        shutNei.setOnAction(e ->
+        {
+            //TODO SHUT NEIGHBOURS
+        });
+        openNei.setOnAction(e ->
+        {
+            //TODO OPEN NEIGH
+        });
+        GridPane key = new GridPane();
+        var gro = new Label("Grocery");
+        var recr = new Label("Recreation");
+        var hos = new Label("Hospital");
+        var nei = new Label("Neighbour");
+        GridPane.setHalignment(gro, HPos.LEFT);
+        GridPane.setHalignment(recr, HPos.LEFT);
+        GridPane.setHalignment(hos, HPos.LEFT);
+        GridPane.setHalignment(nei, HPos.LEFT);
+        Rectangle rGro = new Rectangle(20, 20, Color.GREEN);
+        Rectangle rRec = new Rectangle(20, 20, Color.PURPLE);
+        Rectangle rHos = new Rectangle(20, 20, Color.ORANGE);
+        Rectangle rNei = new Rectangle(20, 20, Color.BLACK);
+        GridPane.setHalignment(rGro, HPos.RIGHT);
+        GridPane.setHalignment(rRec, HPos.RIGHT);
+        GridPane.setHalignment(rHos, HPos.RIGHT);
+        GridPane.setHalignment(rNei, HPos.RIGHT);
+        key.add(gro, 0, 0);
+        key.add(rGro, 1, 0);
+        key.add(recr, 0, 1);
+        key.add(rRec, 1, 1);
+        key.add(hos, 0, 2);
+        key.add(rHos, 1, 2);
+        key.add(nei, 0, 3);
+        key.add(rNei, 1, 3);
+        key.setVgap(10);
+        key.setHgap(10);
+        mainV.getChildren().addAll(title, buttonBox, spd, new Separator(), dispInf, new Separator(), maskAll,
+                recreation, grocery, shutNei, openNei, new Separator(), selectedG, new Separator(),  key);
         this.getChildren().add(mainV);
         update();
     }
