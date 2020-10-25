@@ -30,11 +30,15 @@ public abstract class Node {
         xloc = Math.random() * (max - min) + min;
         yloc = Math.random() * (max - min) + min;
         Random rand = new Random();
-        population = rand.nextInt(100000);
+        population = rand.nextInt(1000);
         infected = rand.nextInt(10);
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
+        recovered = 0;
+        susceptible = population-infected;
+        death = 0;
+        transProb = 0.155;
     }
     public LocationType getType()
     {

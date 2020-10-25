@@ -16,10 +16,6 @@ public class HospitalImpl extends Node{
     public HospitalImpl(){
         super();
         loctype = HOSPITAL;
-        recovered = 0;
-        susceptible = population;
-        death = 0;
-        transProb = 0.155;
         contactRate = 6;
     }
 

@@ -15,10 +15,6 @@ public class NeighbourhoodImpl extends Node{
     public NeighbourhoodImpl(){
         super();
         loctype = NEIGHBOURHOOD;
-        recovered = 0;
-        susceptible = population;
-        death = 0;
-        transProb = 0.06;
         contactRate = 3;
     }
 

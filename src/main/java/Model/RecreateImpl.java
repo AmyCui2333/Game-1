@@ -15,10 +15,6 @@ public class RecreateImpl extends Node{
     public RecreateImpl(){
         super();
         loctype = RECREATION;
-        recovered = 0;
-        susceptible = population;
-        death = 0;
-        transProb = 0.155;
         contactRate = 2;
     }
 
