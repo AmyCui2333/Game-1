@@ -44,7 +44,7 @@ public interface Model {
 
     void setGroceries(boolean bool);
 
-    boolean getGroceriesShutdown(boolean bool);
+    boolean getGroceriesShutdown();
 
     void setHood();
 

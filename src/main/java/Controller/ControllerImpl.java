@@ -188,8 +188,8 @@ public class ControllerImpl extends Controller
         Button openNei = new Button("Open 10 Neighbourhoods");
         recreation.setOnAction(e ->
         {
-            //TODO SHUTDOWN NEIGHBOURHOODS IN MODEL
-            if(true)
+            model.setRecreation(!model.getRecreationShutdown());
+            if(!model.getRecreationShutdown())
             {
                 recreation.setText("Shut Recreation");
             } else
@@ -199,8 +199,8 @@ public class ControllerImpl extends Controller
         });
         grocery.setOnAction(e ->
         {
-            //TODO MAKE IT WORK
-            if(true)
+            model.setGroceries(!model.getGroceriesShutdown());
+            if(!model.getGroceriesShutdown())
             {
                 grocery.setText("Shut Grocery");
             } else
@@ -210,11 +210,11 @@ public class ControllerImpl extends Controller
         });
         shutNei.setOnAction(e ->
         {
-            //TODO SHUT NEIGHBOURS
+            model.setHood();
         });
         openNei.setOnAction(e ->
         {
-            //TODO OPEN NEIGH
+            model.openHood();
         });
         GridPane key = new GridPane();
         var gro = new Label("Grocery");
@@ -225,8 +225,8 @@ public class ControllerImpl extends Controller
         GridPane.setHalignment(recr, HPos.LEFT);
         GridPane.setHalignment(hos, HPos.LEFT);
         GridPane.setHalignment(nei, HPos.LEFT);
-        Rectangle rGro = new Rectangle(20, 20, Color.GREEN);
-        Rectangle rRec = new Rectangle(20, 20, Color.PURPLE);
+        Rectangle rGro = new Rectangle(20, 20, Color.PURPLE);
+        Rectangle rRec = new Rectangle(20, 20, Color.BLUE);
         Rectangle rHos = new Rectangle(20, 20, Color.ORANGE);
         Rectangle rNei = new Rectangle(20, 20, Color.BLACK);
         GridPane.setHalignment(rGro, HPos.RIGHT);

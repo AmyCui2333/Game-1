@@ -184,7 +184,7 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public boolean getGroceriesShutdown(boolean bool) {
+    public boolean getGroceriesShutdown() {
         for (Node n : locNodes){
             if (n.loctype==LocationType.GROCERYSTORE&&!n.getShutDown())
             {
