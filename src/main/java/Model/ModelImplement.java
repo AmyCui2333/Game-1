@@ -28,7 +28,7 @@ public class ModelImplement implements Model{
     public void dayPass() {
         ++day;
         spreadWithin();
-//        travel();
+        travel();
         update();
     }
 
@@ -173,21 +173,47 @@ public class ModelImplement implements Model{
         }
     }
 
-//    public void travel(){
-//        ArrayList<Integer> randList = randomList(3);
-//        for(int rand:randList){
-//            Node start = locNodes.get(rand);
-//            double popStart = start.getPopulation();
-//            ArrayList<Node> connected = start.getConnected();
-//            Random flow = new Random();
-//            double nextNode = flow.nextDouble(connected.size());
-//            double flowsize = flow.nextDouble(popStart);
-//            start.setPopulation(popStart-flowsize);
-//            Node next = locNodes.get(nextNode);
-//            next.addPopulation(flowsize);
-//            System.out.println(flowsize + " moved from" + start + " to " + next);
-//        }
-//    }
+    public void travel(){
+        ArrayList<Integer> randList = randomList(30);
+        for(int rand:randList){
+            Node start = locNodes.get(rand);
+            double popStart = start.getPopulation();
+            double infStart = start.getInfected();
+            ArrayList<Node> connected = start.getConnected();
+            Random flow = new Random();
+            int nextNode = flow.nextInt(connected.size());
+            double flowPop, flowRec, flowInf;
+            try
+            {
+                flowPop = Math.max(flow.nextInt((int) start.getPopulation() / 4), 0);
+            } catch (IllegalArgumentException i)
+            {
+                flowPop = 0;
+            }
+            try
+            {
+                flowRec = Math.max(flow.nextInt((int) Math.min(start.getRecovered() / 2, flowPop)), 0);
+            } catch (IllegalArgumentException i)
+            {
+                flowRec = 0;
+            }
+            try
+            {
+                flowInf = Math.max(flow.nextInt((int) Math.min(start.getInfected() / 5, flowPop - flowRec)), 0);
+            } catch (IllegalArgumentException i)
+            {
+                flowInf = 0;
+            }
+            start.setPopulation(popStart - flowPop);
+            start.setInfected(infStart - flowInf);
+            start.setRecovered(start.getRecovered() - flowRec);
+            Node next = locNodes.get(nextNode);
+            next.addPopulation(flowPop);
+            next.setInfected(next.getInfected() + flowInf);
+            next.setRecovered(next.getRecovered() + flowRec);
+            System.out.println(flowPop + " moved from" + start + " to " + next);
+        }
+    }
 
 
     public void spreadWithin(){
@@ -202,7 +228,7 @@ public class ModelImplement implements Model{
                     n.setInfected(infectStart+spread);
                     double newsus = susStart-(n.getbeta()*susStart*infectStart)/pop;
                     n.setSusceptible(newsus);
-                    if (day>=14) {
+                    {
                         double recoverStart = n.getRecovered();
                         double newRecover = gamma * infectStart * (1.0 - deathRate);
                         n.setRecovered(recoverStart + newRecover);
