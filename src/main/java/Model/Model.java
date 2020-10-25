@@ -6,11 +6,11 @@ public interface Model {
 
     ArrayList<Node> getNodeinRange(double minx, double maxx, double miny, double maxy);
 
-    int getPopulation();
+    double getPopulation();
 
-    int getDeath();
+    double getDeath();
 
-    int getInfected();
+    double getInfected();
 
     boolean getMasked();
 
@@ -32,10 +32,10 @@ public interface Model {
 
     int getGatherSize(Node node);
 
-    int getNodePopulation(Node node);
+    double getNodePopulation(Node node);
 
     boolean getState();
 
-    int getRecovered();
+    double getRecovered();
 
 }

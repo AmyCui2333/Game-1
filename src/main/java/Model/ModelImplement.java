@@ -9,10 +9,10 @@ import static java.lang.Math.min;
 public class ModelImplement implements Model{
     ArrayList<Node> locNodes;
     int day;
-    int death;
-    int population;
-    int infected;
-    int recovered;
+    double death;
+    double population;
+    double infected;
+    double recovered;
     double gamma;
     double deathRate=0.034;
 
@@ -44,15 +44,15 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getPopulation() {
+    public double getPopulation() {
         return population;
     }
 
     public void update() {
-        int pop = 0;
-        int death = 0;
-        int infect = 0;
-        int recover = 0;
+        double pop = 0;
+        double death = 0;
+        double infect = 0;
+        double recover = 0;
         for (Node node: locNodes){
             pop += node.getPopulation();
             death += node.getDeath();
@@ -68,7 +68,7 @@ public class ModelImplement implements Model{
 
 
     @Override
-    public int getInfected() {
+    public double getInfected() {
         return infected;
     }
 
@@ -122,7 +122,7 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getNodePopulation(Node node) {
+    public double getNodePopulation(Node node) {
         return node.getPopulation();
     }
 
@@ -135,12 +135,12 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public int getRecovered() {
+    public double getRecovered() {
         return recovered;
     }
 
     @Override
-    public int getDeath() {
+    public double getDeath() {
         return death;
     }
 
@@ -173,40 +173,40 @@ public class ModelImplement implements Model{
         }
     }
 
-    public void travel(){
-        ArrayList<Integer> randList = randomList(3);
-        for(int rand:randList){
-            Node start = locNodes.get(rand);
-            int popStart = start.getPopulation();
-            ArrayList<Node> connected = start.getConnected();
-            Random flow = new Random();
-            int nextNode = flow.nextInt(connected.size());
-            int flowsize = flow.nextInt(popStart);
-            start.setPopulation(popStart-flowsize);
-            Node next = locNodes.get(nextNode);
-            next.addPopulation(flowsize);
-            System.out.println(flowsize + " moved from" + start + " to " + next);
-        }
-    }
+//    public void travel(){
+//        ArrayList<Integer> randList = randomList(3);
+//        for(int rand:randList){
+//            Node start = locNodes.get(rand);
+//            double popStart = start.getPopulation();
+//            ArrayList<Node> connected = start.getConnected();
+//            Random flow = new Random();
+//            double nextNode = flow.nextDouble(connected.size());
+//            double flowsize = flow.nextDouble(popStart);
+//            start.setPopulation(popStart-flowsize);
+//            Node next = locNodes.get(nextNode);
+//            next.addPopulation(flowsize);
+//            System.out.println(flowsize + " moved from" + start + " to " + next);
+//        }
+//    }
 
 
     public void spreadWithin(){
         if(day>0) {
             for (Node n : locNodes) {
                 if (n.getInfected() != 0) {
-                    int infectStart = n.getInfected();
-                    int susStart = n.getSusceptible();
-                    int pop = n.getPopulation();
-                    int death = n.getDeath();
-                    int spread = (int) Math.round((n.getbeta()*susStart*infectStart)/pop-gamma*infectStart);
+                    double infectStart = n.getInfected();
+                    double susStart = n.getSusceptible();
+                    double pop = n.getPopulation();
+                    double death = n.getDeath();
+                    double spread = (n.getbeta()*susStart*infectStart)/pop-gamma*infectStart;
                     n.setInfected(infectStart+spread);
-                    int newsus = susStart-(int) Math.round((n.getbeta()*susStart*infectStart)/pop);
+                    double newsus = susStart-(n.getbeta()*susStart*infectStart)/pop;
                     n.setSusceptible(newsus);
                     if (day>=14) {
-                        int recoverStart = n.getRecovered();
-                        int newRecover = (int) Math.round(gamma * infectStart * (1.0 - deathRate));
+                        double recoverStart = n.getRecovered();
+                        double newRecover = gamma * infectStart * (1.0 - deathRate);
                         n.setRecovered(recoverStart + newRecover);
-                        int newDeath = (int) Math.round(gamma * infectStart * deathRate);
+                        double newDeath = gamma * infectStart * deathRate;
                         n.setDeath(death + newDeath);
                         n.setPopulation(pop - newDeath);
                     }

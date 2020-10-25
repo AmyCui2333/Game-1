@@ -10,11 +10,11 @@ import static Model.LocationType.NEIGHBOURHOOD;
 public class NodeImplementation implements Node{
     private double xloc;
     private double yloc;
-    private int population;
-    private int infected;
-    private int susceptible;
-    private int recovered;
-    private int death;
+    private double population;
+    private double infected;
+    private double susceptible;
+    private double recovered;
+    private double death;
     private ArrayList<Node> connected;
     private boolean masked;
     private int gathersize;
@@ -27,13 +27,13 @@ public class NodeImplementation implements Node{
 
 
     public NodeImplementation(){
-        int min = -1;
-        int max = 1;
+        double min = -1.0;
+        double max = 1.0;
         xloc = Math.random() * (max - min) + min;
         yloc = Math.random() * (max - min) + min;
         Random rand = new Random();
         population = rand.nextInt(100000);
-        infected = rand.nextInt(50);
+        infected = rand.nextInt(10);
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
@@ -61,12 +61,12 @@ public class NodeImplementation implements Node{
     }
 
     @Override
-    public int getPopulation() {
+    public double getPopulation() {
         return population;
     }
 
     @Override
-    public int getInfected() {
+    public double getInfected() {
         return infected;
     }
 
@@ -121,47 +121,47 @@ public class NodeImplementation implements Node{
     }
 
     @Override
-    public void setPopulation(int pop) {
+    public void setPopulation(double pop) {
         population = pop;
     }
 
     @Override
-    public void addPopulation(int pop) {
+    public void addPopulation(double pop) {
         population += pop;
     }
 
     @Override
-    public int getSusceptible() {
+    public double getSusceptible() {
         return susceptible;
     }
 
     @Override
-    public void setSusceptible(int i) {
+    public void setSusceptible(double i) {
         susceptible = i;
     }
 
     @Override
-    public void setRecovered(int i) {
+    public void setRecovered(double i) {
         recovered = i;
     }
 
     @Override
-    public int getRecovered() {
+    public double getRecovered() {
         return recovered;
     }
 
     @Override
-    public void setInfected(int i) {
+    public void setInfected(double i) {
         infected = i;
     }
 
     @Override
-    public int getDeath() {
+    public double getDeath() {
         return death;
     }
 
     @Override
-    public void setDeath(int i) {
+    public void setDeath(double i) {
         death = i;
     }
 

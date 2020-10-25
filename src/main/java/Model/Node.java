@@ -12,9 +12,9 @@ public interface Node {
 
     double getyloc();
 
-    int getPopulation();
+    double getPopulation();
 
-    int getInfected();
+    double getInfected();
 
     boolean getShutDown();
 
@@ -36,23 +36,23 @@ public interface Node {
 
     ArrayList<Node> getConnected();
 
-    void setPopulation(int pop);
+    void setPopulation(double pop);
 
-    void addPopulation(int pop);
+    void addPopulation(double pop);
 
-    int getSusceptible();
+    double getSusceptible();
 
-    void setSusceptible(int i);
+    void setSusceptible(double i);
 
-    void setRecovered(int i);
+    void setRecovered(double i);
 
-    int getRecovered();
+    double getRecovered();
 
-    void setInfected(int i);
+    void setInfected(double i);
 
-    int getDeath();
+    double getDeath();
 
-    void setDeath(int i);
+    void setDeath(double i);
 
     double getbeta();
 
