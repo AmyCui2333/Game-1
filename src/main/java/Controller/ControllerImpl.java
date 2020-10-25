@@ -205,7 +205,7 @@ public class ControllerImpl extends Controller
                 grocery.setText("Shut Grocery");
             } else
             {
-                grocery.setText("Open Recreation");
+                grocery.setText("Open Grocery");
             }
         });
         shutNei.setOnAction(e ->
