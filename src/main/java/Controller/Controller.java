@@ -9,4 +9,5 @@ public abstract class Controller extends Pane
     public Node selected;
 
     public abstract void updateSelected(Node n);
+    public abstract void stop();
 }
