@@ -217,17 +217,17 @@ public class ViewImpl extends  View
                     switch (n.getType())
                     {
                         case HOSPITAL:
-                            c = Color.RED;
-                            break;
-                        case RECREATION:
-                            c = Color.BLUE;
-                            break;
-                        case GROCERYSTORE:
-                            c = Color.GREEN;
-                            break;
-                        case NEIGHBOURHOOD:
-                        default:
-                            c = Color.BLACK;
+                        c = Color.ORANGE;
+                        break;
+                    case RECREATION:
+                        c = Color.BLUE;
+                        break;
+                    case GROCERYSTORE:
+                        c = Color.PURPLE;
+                        break;
+                    case NEIGHBOURHOOD:
+                    default:
+                        c = Color.BLACK;
                     }
                     var pt = viewToScr(n.getloc());
 
