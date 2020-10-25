@@ -29,7 +29,6 @@ public class ViewImpl extends  View
     private final Model model;
     private final double nodeSize = .05;
     Controller controller;
-    boolean started = false;
     Image welcome, ecoloss, deathloss, win;
     public ViewImpl(Model m)
     {

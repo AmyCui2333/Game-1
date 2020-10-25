@@ -54,6 +54,7 @@ public class ControllerImpl extends Controller
         playPause.setGraphic(new ImageView(play));
         playPause.setOnAction(e ->
         {
+            view.started = true;
             playing = !playing;
             if(playing)
                 playPause.setGraphic(new ImageView(pause));
@@ -63,6 +64,7 @@ public class ControllerImpl extends Controller
         stepBtn.setGraphic(new ImageView(step));
         stepBtn.setOnAction(e ->
         {
+            view.started = true;
             model.dayPass();
             update();
         });
