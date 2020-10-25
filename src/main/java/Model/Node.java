@@ -53,4 +53,7 @@ public interface Node {
     int getDeath();
 
     void setDeath(int i);
+
+    double getbeta();
+
 }

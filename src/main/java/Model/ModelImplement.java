@@ -13,11 +13,14 @@ public class ModelImplement implements Model{
     int population;
     int infected;
     int recovered;
+    double gamma;
+    double deathRate=0.034;
 
     ModelImplement(){
         generateNodes();
         connectNodes();
         day = 0;
+        gamma = 0.08;
         update();
     }
 
@@ -25,7 +28,7 @@ public class ModelImplement implements Model{
     public void dayPass() {
         ++day;
         spreadWithin();
-        travel();
+//        travel();
         dieAndRecover();
         update();
     }
@@ -186,15 +189,26 @@ public class ModelImplement implements Model{
             System.out.println(flowsize + " moved from" + start + " to " + next);
         }
     }
-    //TODO: Model the travelling of infected&recovered individuals(mainly infected)
+
 
     public void spreadWithin(){
         if(day>0) {
             for (Node n : locNodes) {
                 if (n.getInfected() != 0) {
                     int infectStart = n.getInfected();
-                    int spread = min(n.getPopulation(),(int) (infectStart * 3.0));
-                    n.setInfected(spread);
+                    int susStart = n.getSusceptible();
+                    int pop = n.getPopulation();
+                    int death = n.getDeath();
+                    int spread = (int)((n.getbeta()*susStart*infectStart)/pop-gamma*infectStart);
+                    n.setInfected(infectStart+spread);
+                    int newsus = (int)(susStart-(n.getbeta()*susStart*infectStart)/pop);
+                    n.setSusceptible(newsus);
+                    int recoverStart = n.getRecovered();
+                    int newRecover = (int)(gamma*infectStart*(1.0-deathRate));
+                    n.setRecovered(recoverStart+newRecover);
+                    int newDeath = (int)(gamma*infectStart*deathRate);
+                    n.setDeath(death+newDeath);
+                    n.setPopulation(pop-newDeath);
                 }
             }
         }
@@ -205,16 +219,13 @@ public class ModelImplement implements Model{
         if(day>=14) {
             for (Node n : locNodes) {
                 int infectStart = n.getInfected();
-                int die = (int)(infectStart*0.034);
-                int recover = (int)(infectStart*0.08);
-                n.setRecovered(n.getRecovered()+recover);
-                n.setDeath(n.getDeath()+die);
-                n.setPopulation(n.getPopulation()-die);
-                n.setInfected(infectStart-recover-die);
+                int death = n.getDeath();
+                int recoverStart = n.getRecovered();
+                int newRecover = (int)(0.08*infectStart*(1-0.034));
+
             }
         }
     }
-    //TODO: Set a rate of recovery for each node after the 14th day
 
 
     public ArrayList<Integer> randomList(int max){

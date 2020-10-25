@@ -25,20 +25,24 @@ public class NodeImplementation implements Node{
     private double contactRate;
 
 
+
     public NodeImplementation(){
         int min = -1;
         int max = 1;
         xloc = Math.random() * (max - min) + min;
         yloc = Math.random() * (max - min) + min;
         Random rand = new Random();
-        population = rand.nextInt(100);
-        infected = rand.nextInt(2);
+        population = rand.nextInt(100000);
+        infected = rand.nextInt(50);
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
         loctype = NEIGHBOURHOOD;
         recovered = 0;
-        susceptible = population-infected;
+        susceptible = population;
+        death = 0;
+        transProb = 0.155;
+        contactRate = 3;
     }
 
     @Override
@@ -159,6 +163,11 @@ public class NodeImplementation implements Node{
     @Override
     public void setDeath(int i) {
         death = i;
+    }
+
+    @Override
+    public double getbeta() {
+        return transProb*contactRate;
     }
 
 }
