@@ -151,6 +151,71 @@ public class ModelImplement implements Model{
     }
 
     @Override
+    public void setRecreation(boolean bool) {
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.RECREATION)
+            {
+                n.setShutDown(bool);
+            }
+        }
+    }
+
+    @Override
+    public boolean getRecreationShutdown() {
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.RECREATION&&!n.getShutDown())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void setGroceries(boolean bool) {
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.GROCERYSTORE)
+            {
+                n.setShutDown(bool);
+            }
+        }
+    }
+
+    @Override
+    public boolean getGroceriesShutdown(boolean bool) {
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.GROCERYSTORE&&!n.getShutDown())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void setHood() {
+        int i = 0;
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.NEIGHBOURHOOD&&!n.getShutDown()&&i<10)
+            {
+                n.setShutDown(true);
+            }
+        }
+    }
+
+    @Override
+    public void openHood() {
+        int i = 0;
+        for (Node n : locNodes){
+            if (n.loctype==LocationType.NEIGHBOURHOOD&&n.getShutDown()&&i<10)
+            {
+                n.setShutDown(false);
+            }
+        }
+
+    }
+
+    @Override
     public double getDeath() {
         return death;
     }

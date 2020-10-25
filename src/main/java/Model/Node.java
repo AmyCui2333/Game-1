@@ -34,7 +34,7 @@ public abstract class Node {
         infected = rand.nextInt(30);
         connected = new ArrayList<>();
         masked = false;
-        shutdown = false;
+        shutdown = true;
         recovered = 0;
         susceptible = population-infected;
         death = 0;
@@ -164,7 +164,7 @@ public abstract class Node {
 
     private double gettransProb(){
         double tmp = transProb;
-        if (masked) tmp *= .65;
+        if (masked) tmp *= .7;
         if (shutdown) tmp *= .3;
         return tmp;
     }

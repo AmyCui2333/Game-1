@@ -38,4 +38,16 @@ public interface Model {
 
     double getGDP();
 
+    void setRecreation(boolean bool);
+
+    boolean getRecreationShutdown();
+
+    void setGroceries(boolean bool);
+
+    boolean getGroceriesShutdown(boolean bool);
+
+    void setHood();
+
+    void openHood();
+
 }
