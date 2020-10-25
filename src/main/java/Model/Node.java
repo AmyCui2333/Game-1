@@ -111,29 +111,22 @@ public abstract class Node {
         return this.connected;
     }
 
-    public void setPopulation(double pop)
-    {
-        this.population = Math.max(pop, 0);
-    }
-
-    public void addPopulation(double pop)
-    {
-        this.population += pop;
-    }
 
     public double getSusceptible()
     {
         return this.susceptible;
     }
 
-    public void setSusceptible(double i)
+    public void addSusceptible(double i)
     {
-        this.susceptible = Math.max(i, 0);
+        this.susceptible += i;
+        this.population += i;
     }
 
-    public void setRecovered(double i)
+    public void addRecovered(double i)
     {
-        this.recovered = Math.max(i, 0);
+        this.recovered += i;
+        this.population += i;
     }
 
     public double getRecovered()
@@ -141,9 +134,10 @@ public abstract class Node {
         return this.recovered;
     }
 
-    public void setInfected(double i)
+    public void addInfected(double i)
     {
-        this.infected = Math.max(i, 0);
+        this.infected += i;
+        this.population += i;
     }
 
     public double getDeath()
@@ -151,9 +145,10 @@ public abstract class Node {
         return this.death;
     }
 
-    public void setDeath(double i)
+    public void addDeath(double i)
     {
-        this.death = Math.max(i, 0);
+        this.death += i;
+        this.population -= i;
     }
 
     public double getbeta()
