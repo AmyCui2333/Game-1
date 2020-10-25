@@ -27,7 +27,7 @@ public class ModelImplement implements Model{
     @Override
     public void dayPass() {
         ++day;
-        spreadWithin();
+        if((int) getInfected() > 0)spreadWithin();
         travel();
         update();
     }
@@ -124,11 +124,19 @@ public class ModelImplement implements Model{
     }
 
     @Override
-    public boolean getState() {
-        if(population/death<2){
-            return false;
+    public GameState getState() {
+        if(death > .2 * population){
+            return GameState.DEATHLOSS;
+        } else if (false)
+        {
+            return GameState.ECOLOSS;
+        } else if ((int) getInfected() == 0)
+        {
+            return GameState.WIN;
+        } else
+        {
+            return GameState.PLAYING;
         }
-        return true;
     }
 
     @Override
@@ -189,12 +197,18 @@ public class ModelImplement implements Model{
     }
 
     public void travel(){
-        ArrayList<Integer> randList = randomList(30);
+        var open = new ArrayList<Node>(locNodes.size() / 2);
+        for(Node n : locNodes)
+            if(!n.shutdown)
+                open.add(n);
+
+        ArrayList<Integer> randList = randomList(30, open.size());
         for(int rand:randList){
             Node start = locNodes.get(rand);
-            double popStart = start.getPopulation();
-            double infStart = start.getInfected();
-            ArrayList<Node> connected = start.getConnected();
+            var connected = new ArrayList<Node>();
+            for(Node n : start.getConnected())
+                if(!n.shutdown)
+                    connected.add(n);
             Random flow = new Random();
             int nextNode = flow.nextInt(connected.size());
             double flowSus, flowRec, flowInf;
@@ -250,14 +264,14 @@ public class ModelImplement implements Model{
                         n.population = (pop - newDeath);
                     }
                     if(n.infected + n.susceptible + n.recovered  - 1 > n.population)
-                        System.out.println("BAD");
+                        throw new Error();
                 }
             }
         }
     }
 
-
-    public ArrayList<Integer> randomList(int max){
+    public ArrayList<Integer> randomList(int max) {return randomList(max, locNodes.size());}
+    public ArrayList<Integer> randomList(int max, int size){
         Random random = new Random();
         ArrayList<Integer> randList = new ArrayList<>();
         for (int i=1;i<max;i++){
