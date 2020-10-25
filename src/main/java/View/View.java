@@ -8,6 +8,8 @@ import javafx.scene.layout.StackPane;
 
 public abstract class View extends Pane
 {
+
+    public boolean started = false;
     /**
      * Draws the current state on the screen
      */
