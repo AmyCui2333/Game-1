@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.text.NumberFormat;
 
 
 public class ControllerImpl extends Controller
@@ -32,8 +33,9 @@ public class ControllerImpl extends Controller
     private double secondsPerDay;
     private View view;
     private GridPane selectedG;
-    private final Label population, infected, dead, recovered, popuM, infeM, deadM, recoM;
+    private final Label population, infected, dead, recovered, GDP, popuM, infeM, deadM, recoM, GDPM, treasury;
     private final CheckBox mask, shutdown, maskAll;
+    NumberFormat formatter = NumberFormat.getCurrencyInstance();
     public ControllerImpl(Model m, View v)
     {
         model = m;
@@ -95,6 +97,8 @@ public class ControllerImpl extends Controller
         Label inf = new Label("Infected");
         Label ded = new Label("Dead:");
         Label rec = new Label("Recovered:");
+        Label gdp = new Label("GDP:");
+        GDP = new Label();
         population = new Label();
         population.setTextFill(Color.GREY);
         infected = new Label();
@@ -103,23 +107,29 @@ public class ControllerImpl extends Controller
         dead.setTextFill(Color.BLACK);
         recovered = new Label();
         recovered.setTextFill(Color.GREEN);
+        GridPane.setHalignment(gdp, HPos.LEFT);
         GridPane.setHalignment(pop, HPos.LEFT);
         GridPane.setHalignment(inf, HPos.LEFT);
         GridPane.setHalignment(ded, HPos.LEFT);
         GridPane.setHalignment(rec, HPos.LEFT);
+        GridPane.setHalignment(GDP, HPos.RIGHT);
         GridPane.setHalignment(population, HPos.RIGHT);
         GridPane.setHalignment(infected, HPos.RIGHT);
         GridPane.setHalignment(dead, HPos.RIGHT);
         GridPane.setHalignment(recovered, HPos.RIGHT);
-        selectedG.add(pop, 0, 0);
-        selectedG.add(inf, 0, 1);
-        selectedG.add(ded, 0, 2);
-        selectedG.add(rec, 0, 3);
-        selectedG.add(population, 1, 0);
-        selectedG.add(infected, 1, 1);
-        selectedG.add(dead, 1, 2);
-        selectedG.add(recovered, 1, 3);
+        selectedG.add(gdp, 0, 0);
+        selectedG.add(pop, 0, 1);
+        selectedG.add(inf, 0, 2);
+        selectedG.add(ded, 0, 3);
+        selectedG.add(rec, 0, 4);
+        selectedG.add(GDP, 1, 0);
+        selectedG.add(population, 1, 1);
+        selectedG.add(infected, 1, 2);
+        selectedG.add(dead, 1, 3);
+        selectedG.add(recovered, 1, 4);
         mask = new CheckBox("Masks");
+        var gdpM = new Label("GDP:");
+        var treas = new Label("Treasure:");
         var popM = new Label("Population:");
         var infM = new Label("Infected");
         var dedM = new Label("Dead:");
@@ -128,28 +138,38 @@ public class ControllerImpl extends Controller
         infeM = new Label();
         deadM = new Label();
         recoM = new Label();
+        GDPM  = new Label();
+        treasury = new Label();
         popuM.setTextFill(Color.GREY);
         infeM.setTextFill(Color.RED);
         deadM.setTextFill(Color.BLACK);
         recoM.setTextFill(Color.GREEN);
+        GridPane.setHalignment(treas, HPos.LEFT);
+        GridPane.setHalignment(gdpM, HPos.LEFT);
         GridPane.setHalignment(popM, HPos.LEFT);
         GridPane.setHalignment(infM, HPos.LEFT);
         GridPane.setHalignment(dedM, HPos.LEFT);
         GridPane.setHalignment(recM, HPos.LEFT);
+        GridPane.setHalignment(treasury, HPos.RIGHT);
+        GridPane.setHalignment(GDPM, HPos.RIGHT);
         GridPane.setHalignment(popuM, HPos.RIGHT);
         GridPane.setHalignment(infeM, HPos.RIGHT);
         GridPane.setHalignment(deadM, HPos.RIGHT);
         GridPane.setHalignment(recoM, HPos.RIGHT);
 
-        dispInf.add(popM, 0, 0);
-        dispInf.add(infM, 0, 1);
-        dispInf.add(dedM, 0, 2);
-        dispInf.add(recM, 0, 3);
+        dispInf.add(gdpM, 0, 0);
+        dispInf.add(treas, 0, 1);
+        dispInf.add(popM, 0, 2);
+        dispInf.add(infM, 0, 3);
+        dispInf.add(dedM, 0, 4);
+        dispInf.add(recM, 0, 5);
 
-        dispInf.add(popuM, 1, 0);
-        dispInf.add(infeM, 1, 1);
-        dispInf.add(deadM, 1, 2);
-        dispInf.add(recoM, 1, 3);
+        dispInf.add(GDPM, 1, 0);
+        dispInf.add(treasury, 1, 1);
+        dispInf.add(popuM, 1, 2);
+        dispInf.add(infeM, 1, 3);
+        dispInf.add(deadM, 1, 4);
+        dispInf.add(recoM, 1, 5);
         mask.selectedProperty().addListener((arg, oldVal, newVal) ->
         {
             selected.setMasked(newVal);
@@ -157,8 +177,8 @@ public class ControllerImpl extends Controller
         });
         shutdown = new CheckBox("Shutdown");
         shutdown.selectedProperty().addListener((arg, oldVal, newVal) -> selected.setShutDown(newVal));
-        selectedG.add(mask, 0, 4);
-        selectedG.add(shutdown, 1, 4);
+        selectedG.add(mask, 0, 5);
+        selectedG.add(shutdown, 1, 5);
 
         mainV.setPadding(new Insets(20));
         mainV.setSpacing(20);
@@ -181,11 +201,14 @@ public class ControllerImpl extends Controller
             recovered.setText(String.valueOf((int) selected.getRecovered()));
             mask.setSelected(selected.getMasked());
             shutdown.setSelected(selected.getShutDown());
+            GDP.setText("UNIMPLEMENTED");
         } else selectedG.setVisible(false);
         popuM.setText(String.valueOf((int) model.getPopulation()));
         infeM.setText(String.valueOf((int) model.getInfected()));
         deadM.setText(String.valueOf((int) model.getDeath()));
         recoM.setText(String.valueOf((int) model.getRecovered()));
+        GDPM.setText("UNIMPLEMENTED");
+        treasury.setText("UNIMPLEMENTED");
         maskAll.setSelected(model.getMasked());
         view.draw();
     }

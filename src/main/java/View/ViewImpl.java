@@ -8,6 +8,7 @@ import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
@@ -28,9 +29,12 @@ public class ViewImpl extends  View
     private final Model model;
     private final double nodeSize = .02;
     Controller controller;
+    boolean started = false;
+    Image welcome;
     public ViewImpl(Model m)
     {
         this.model = m;
+        welcome = new Image(getClass().getResourceAsStream("welcome.png"));
         canv = new Canvas();
         this.getChildren().add(canv);
         gc = canv.getGraphicsContext2D();
@@ -86,30 +90,39 @@ public class ViewImpl extends  View
         });
         this.addEventHandler(ZoomEvent.ANY, e ->
         {
-            double width = maxX - minX;
-            double height = maxY - minY;
-            double widthDiff = width * (1 + 10 * e.getZoomFactor());
-            double heightDiff = height * (1 + 10 * e.getZoomFactor());
-            maxX += widthDiff / 2;
-            minX -= widthDiff / 2;
-            maxY += heightDiff / 2;
-            minY -= heightDiff / 2;
-            draw();
+            if(started)
+            {
+                double width = maxX - minX;
+                double height = maxY - minY;
+                double widthDiff = width * (1 + 10 * e.getZoomFactor());
+                double heightDiff = height * (1 + 10 * e.getZoomFactor());
+                maxX += widthDiff / 2;
+                minX -= widthDiff / 2;
+                maxY += heightDiff / 2;
+                minY -= heightDiff / 2;
+                draw();
+            }
         });
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->
         {
-            var viewPt = scrToView(e.getX(), e.getY()).add(-nodeSize / 2, nodeSize / 2);
-            Node selected = null;
-            for(Node n : nodesOnScreen)
+            if(!started)
             {
-                if(viewPt.distance(n.getloc()) < nodeSize)
+                started = true;
+                draw();
+            } else
+            {
+                var viewPt = scrToView(e.getX(), e.getY()).add(-nodeSize / 2, nodeSize / 2);
+                Node selected = null;
+                for (Node n : nodesOnScreen)
                 {
-                    selected = n;
-                    break;
+                    if (viewPt.distance(n.getloc()) < nodeSize)
+                    {
+                        selected = n;
+                        break;
+                    }
                 }
+                controller.updateSelected(selected);
             }
-            controller.updateSelected(selected);
-            System.out.println(selected);
         });
         canv.setVisible(true);
     }
@@ -163,89 +176,80 @@ public class ViewImpl extends  View
     @Override
     public synchronized void draw()
     {
-        gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
-
-
-        gc.setStroke(Color.BLACK);
-        gc.strokeLine(0, 0, canv.getWidth(), 0);
-        gc.strokeLine(canv.getWidth(), 0, canv.getWidth(), canv.getHeight());
-        gc.strokeLine(canv.getWidth(), canv.getHeight(), 0, canv.getHeight());
-        gc.strokeLine(0, canv.getHeight(), 0, 0);
-        gc.setFont(new Font(12));
-        /*Point2D p1 = new Point2D(-.5, -.5), p2 = new Point2D(-.5, .5), p3 = new Point2D(.5, .5), p4 = new Point2D(.5, -.5);
-        drawLine(p1, p2);
-        drawLine(p2, p3);
-        drawLine(p3, p4);
-        drawLine(p4, p1);
-        p1 = new Point2D(-1, -1);
-        p2 = new Point2D(-1, 1);
-        p3 = new Point2D(1, 1);
-        p4 = new Point2D(1, -1);
-        drawLine(p1, p3);
-        drawLine(p2, p4);*/
-
-        double w = nodeSize * getWidth() / (maxX - minX);
-        double h = nodeSize *  getHeight() / (maxY - minY);
-        double width = maxX - minX;
-        double height = maxY - minY;
-        nodesOnScreen = model.getNodeinRange(minX - w * 3, maxX + w * 3, minY - h * 3, maxY + h * 3);
-        gc.setStroke(Color.BLUEVIOLET);
-        gc.setFill(Color.BLUEVIOLET);
-        Color c;
-        for(Node n : nodesOnScreen)
+        if(started)
         {
-            switch (n.getType())
-            {
-                case HOSPITAL:
-                    c = Color.RED;
-                    break;
-                case RECREATION:
-                    c = Color.BLUE;
-                    break;
-                case GROCERYSTORE:
-                    c = Color.GREEN;
-                    break;
-                case NEIGHBOURHOOD:
-                default:
-                    c = Color.BLACK;
-            }
-            var pt = viewToScr(n.getloc());
+            gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
 
-            gc.setFont(new Font(h / 3));
-            double  sz = gc.getFont().getSize() / 2;
-            if(controller != null && n == controller.selected)
+
+            gc.setStroke(Color.BLACK);
+            gc.strokeLine(0, 0, canv.getWidth(), 0);
+            gc.strokeLine(canv.getWidth(), 0, canv.getWidth(), canv.getHeight());
+            gc.strokeLine(canv.getWidth(), canv.getHeight(), 0, canv.getHeight());
+            gc.strokeLine(0, canv.getHeight(), 0, 0);
+            gc.setFont(new Font(12));
+            double w = nodeSize * getWidth() / (maxX - minX);
+            double h = nodeSize * getHeight() / (maxY - minY);
+            nodesOnScreen = model.getNodeinRange(minX - w * 3, maxX + w * 3, minY - h * 3, maxY + h * 3);
+            gc.setStroke(Color.BLUEVIOLET);
+            gc.setFill(Color.BLUEVIOLET);
+            Color c;
+            for (Node n : nodesOnScreen)
             {
+                switch (n.getType())
+                {
+                    case HOSPITAL:
+                        c = Color.RED;
+                        break;
+                    case RECREATION:
+                        c = Color.BLUE;
+                        break;
+                    case GROCERYSTORE:
+                        c = Color.GREEN;
+                        break;
+                    case NEIGHBOURHOOD:
+                    default:
+                        c = Color.BLACK;
+                }
+                var pt = viewToScr(n.getloc());
+
+                gc.setFont(new Font(h / 3));
+                double sz = gc.getFont().getSize() / 2;
+                if (controller != null && n == controller.selected)
+                {
+                    gc.setFill(Color.RED);
+                    gc.fillOval(pt.getX() - w / 2 - 3, pt.getY() + h / 2 - 3, w + 6, h + 6);
+                }
+                gc.setFill(c);
+                gc.setStroke(c);
+                gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
+                gc.setStroke(Color.BLACK);
+                gc.setFill(Color.WHITE);
+                String popStr = String.valueOf((int) n.getPopulation());
+                Text tmp = new Text();
+                tmp.setFont(gc.getFont());
+                tmp.setText(popStr);
+                double popWidth = tmp.getLayoutBounds().getWidth();
+                gc.fillText(popStr, pt.getX() - popWidth / 2, pt.getY() + 3 * h / 4 + sz);
                 gc.setFill(Color.RED);
-                gc.fillOval(pt.getX() - w / 2 - 3, pt.getY() + h / 2 - 3, w + 6, h + 6);
+                String infStr = String.valueOf((int) n.getInfected());
+                tmp.setText(infStr);
+                double infWidth = tmp.getLayoutBounds().getWidth();
+                gc.fillText(infStr, pt.getX() - infWidth / 2, pt.getY() + h + sz);
+                gc.setFill(Color.GREEN);
+                String recStr = String.valueOf((int) n.getRecovered());
+                tmp.setText(recStr);
+                double recWidth = tmp.getLayoutBounds().getWidth();
+                gc.fillText(recStr, pt.getX() - recWidth / 2, pt.getY() + 5 * h / 4 + sz);
+
             }
-            gc.setFill(c);
-            gc.setStroke(c);
-            gc.fillOval(pt.getX() - w / 2, pt.getY() + h / 2, w, h);
+            gc.setFont(new Font(30));
             gc.setStroke(Color.BLACK);
             gc.setFill(Color.WHITE);
-            String popStr = String.valueOf((int) n.getPopulation());
-            Text tmp = new Text();
-            tmp.setFont(gc.getFont());
-            tmp.setText(popStr);
-            double popWidth = tmp.getLayoutBounds().getWidth();
-            gc.fillText(popStr, pt.getX() - popWidth/2, pt.getY() + 3 * h / 4 + sz);
-            gc.setFill(Color.RED);
-            String infStr = String.valueOf((int) n.getInfected());
-            tmp.setText(infStr);
-            double infWidth = tmp.getLayoutBounds().getWidth();
-            gc.fillText(infStr, pt.getX() - infWidth/2, pt.getY() + h + sz);
-            gc.setFill(Color.GREEN);
-            String recStr = String.valueOf((int) n.getRecovered());
-            tmp.setText(recStr);
-            double recWidth = tmp.getLayoutBounds().getWidth();
-            gc.fillText(recStr, pt.getX() - recWidth/2, pt.getY() + 5 * h / 4 + sz);
-
+            gc.fillText("Day: " + model.getDay(), 5, 30);
+            gc.strokeText("Day: " + model.getDay(), 5, 30);
+        } else
+        {
+            gc.drawImage(welcome, 0, 0, canv.getWidth(), canv.getHeight());
         }
-        gc.setFont(new Font(30));
-        gc.setStroke(Color.BLACK);
-        gc.setFill(Color.WHITE);
-        gc.fillText("Day: " + model.getDay(), 5, 30);
-        gc.strokeText("Day: " + model.getDay(), 5, 30);
-
     }
 }

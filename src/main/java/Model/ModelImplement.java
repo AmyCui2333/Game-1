@@ -133,7 +133,7 @@ public class ModelImplement implements Model{
         } else if (false)
         {
             return GameState.ECOLOSS;
-        } else if ((int) getInfected() == 0)
+        } else if ((int) getInfected() == 0 || getDay() > 200)
         {
             return GameState.WIN;
         } else
