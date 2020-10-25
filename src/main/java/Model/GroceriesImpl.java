@@ -5,9 +5,9 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Model.LocationType.NEIGHBOURHOOD;
+import static Model.LocationType.RECREATION;
 
-public class NodeImplementation implements Node{
+public class GroceriesImpl implements Node{
     private double xloc;
     private double yloc;
     private double population;
@@ -20,13 +20,13 @@ public class NodeImplementation implements Node{
     private int gathersize;
     private boolean shutdown;
     private LocationType loctype;
-    private double infectionrate;
     private double transProb;
     private double contactRate;
+    private double revenue;
 
 
 
-    public NodeImplementation(){
+    public GroceriesImpl(){
         double min = -1.0;
         double max = 1.0;
         xloc = Math.random() * (max - min) + min;
@@ -37,12 +37,12 @@ public class NodeImplementation implements Node{
         connected = new ArrayList<>();
         masked = false;
         shutdown = false;
-        loctype = NEIGHBOURHOOD;
+        loctype = RECREATION;
         recovered = 0;
         susceptible = population;
         death = 0;
         transProb = 0.155;
-        contactRate = 3;
+        contactRate = 4;
     }
 
     @Override
@@ -169,5 +169,4 @@ public class NodeImplementation implements Node{
     public double getbeta() {
         return transProb*contactRate;
     }
-
 }

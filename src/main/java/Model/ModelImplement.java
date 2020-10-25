@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 import static java.lang.Math.min;
@@ -152,7 +151,7 @@ public class ModelImplement implements Model{
     public void generateNodes(){
         ArrayList<Node> Nodes = new ArrayList<>();
         for(int i=1;i<100;i++){
-            Node node = new NodeImplementation();
+            Node node = new NeighbourhoodImpl();
             Nodes.add(node);
         }
         locNodes = Nodes;
