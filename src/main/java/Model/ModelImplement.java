@@ -174,12 +174,18 @@ public class ModelImplement implements Model{
     }
 
     public void travel(){
-        ArrayList<Integer> randList = randomList(30);
+        var open = new ArrayList<Node>(locNodes.size() / 2);
+        for(Node n : locNodes)
+            if(!n.shutdown)
+                open.add(n);
+
+        ArrayList<Integer> randList = randomList(30, open.size());
         for(int rand:randList){
             Node start = locNodes.get(rand);
-            double popStart = start.getPopulation();
-            double infStart = start.getInfected();
-            ArrayList<Node> connected = start.getConnected();
+            var connected = new ArrayList<Node>();
+            for(Node n : start.getConnected())
+                if(!n.shutdown)
+                    connected.add(n);
             Random flow = new Random();
             int nextNode = flow.nextInt(connected.size());
             double flowSus, flowRec, flowInf;
@@ -241,8 +247,8 @@ public class ModelImplement implements Model{
         }
     }
 
-
-    public ArrayList<Integer> randomList(int max){
+    public ArrayList<Integer> randomList(int max) {return randomList(max, locNodes.size());}
+    public ArrayList<Integer> randomList(int max, int size){
         Random random = new Random();
         ArrayList<Integer> randList = new ArrayList<>();
         for (int i=1;i<max;i++){
